@@ -3,6 +3,18 @@
   <qresource>
 
     <file>..\icons_setup\icons\logo.png</file>
+    <file>..\icons_setup\icons\browse.png</file>
+    <file>..\icons_setup\icons\home.png</file>
+    <file>..\icons_setup\icons\pause.png</file>
+    <file>..\icons_setup\icons\play.png</file>
+    <file>..\icons_setup\icons\replay.png</file>
+    <file>..\icons_setup\icons\redo.png</file>
+    <file>..\icons_setup\icons\undo.png</file>
+    <file>..\icons_setup\icons\save.png</file>
+    <file>..\icons_setup\icons\zero.png</file>
+    <file>..\icons_setup\icons\delete.png</file>
+    <file>..\icons_setup\icons\pole.png</file>
+    <file>..\icons_setup\icons\speed.png</file>
 
   </qresource>
 </RCC>

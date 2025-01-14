@@ -4,11 +4,11 @@ from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
 from helper_function.compile_qrc import compile_qrc
-from icons_setup.compiledIcons import *
 from classes.signalViewer import SignalViewer
 import numpy as np
 
 compile_qrc()
+from icons_setup.compiledIcons import *
 
 class MainWindow(QMainWindow):
     def __init__(self):
