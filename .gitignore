@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+icons_setup/compiledIcons.py
 
 # C extensions
 *.so
