@@ -1,7 +1,8 @@
 import pyqtgraph as pg
 from PyQt5.QtCore import QTimer
+from classes.Viewer import Viewer
 
-class SignalViewer(pg.PlotWidget):
+class SignalViewer(Viewer):
     def __init__(self):
         super().__init__()
         self.__current_signal = [[],[]]
