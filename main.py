@@ -7,7 +7,9 @@ from helper_function.compile_qrc import compile_qrc
 from classes.signalViewer import SignalViewer
 from classes.controller import Controller
 from classes.customSignal import CustomSignal
+from classes.designerViewer import DesignerViewer 
 import numpy as np
+import pyqtgraph as pg
 
 compile_qrc()
 from icons_setup.compiledIcons import *
@@ -39,6 +41,15 @@ class MainWindow(QMainWindow):
         x = np.linspace(0, 10 * np.pi, 1000)
         y = np.sin(x)
         self.current_signal = CustomSignal(x , y)
+        
+        # initialize the filter designer viewer
+        self.designer_viewer = DesignerViewer()
+        self.graphics_layout = pg.GraphicsLayoutWidget()
+        self.graphics_layout.addItem(self.designer_viewer)
+        self.designer_frame = self.findChild(QFrame,"unitCircleFrame")
+        self.designer_frame_layout = QVBoxLayout()
+        self.designer_frame.setLayout(self.designer_frame_layout)
+        self.designer_frame_layout.addWidget(self.graphics_layout)
         
         # Initialize the controller
         self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)

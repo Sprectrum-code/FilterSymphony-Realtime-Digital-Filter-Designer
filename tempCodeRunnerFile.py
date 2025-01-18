@@ -1,4 +1,10 @@
-__author__ = 'd49030'
+# import pyqtgraph.examples
+
+# # Run the examples application
+# pyqtgraph.examples.run()
+
+
+# __author__ = 'd49030'
 
 import PyQt5.QtWidgets
 import pyqtgraph as pg
@@ -81,6 +87,7 @@ class Plot(pg.PlotItem):
                 y[self.dragIndex] = local_pos.y() + self.dragOffset.y()
                 # Update the PlotDataItem (this will automatically update the graphics when a change is detected)
                 self.plot_item_control.setData(x, y)
+                print(self.plot_item_control)
 
         pass
 
