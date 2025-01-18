@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1223</width>
-    <height>819</height>
+    <width>1590</width>
+    <height>1108</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -123,26 +123,182 @@ QSlider::add-page:horizontal {
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_3">
+          <property name="verticalSpacing">
+           <number>6</number>
+          </property>
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
-             <widget class="QPushButton" name="pushButton_10">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
+             <widget class="QLabel" name="label_5">
+              <property name="styleSheet">
+               <string notr="true">font-size: 30px;
+font-weight:bold;</string>
               </property>
               <property name="text">
-               <string/>
+               <string>Digital Filter Designer</string>
               </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <property name="spacing">
+               <number>50</number>
+              </property>
+              <item>
+               <widget class="QPushButton" name="filters">
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Use Built-In Filters</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="icons_setup/icons.qrc">
+                  <normaloff>:/icons_setup/icons/filters.png</normaloff>:/icons_setup/icons/filters.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>50</width>
+                  <height>50</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="cCodeGenerator">
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Generate Filter C Code</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="icons_setup/icons.qrc">
+                  <normaloff>:/icons_setup/icons/c.png</normaloff>:/icons_setup/icons/c.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>50</width>
+                  <height>50</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="signalDrawing">
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Draw Arbitrary Signal </string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="icons_setup/icons.qrc">
+                  <normaloff>:/icons_setup/icons/draw.png</normaloff>:/icons_setup/icons/draw.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>50</width>
+                  <height>50</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="filterRealization">
+                <property name="minimumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>70</height>
+                 </size>
+                </property>
+                <property name="toolTip">
+                 <string>Get Filter Realization</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="icon">
+                 <iconset resource="icons_setup/icons.qrc">
+                  <normaloff>:/icons_setup/icons/blocks.png</normaloff>:/icons_setup/icons/blocks.png</iconset>
+                </property>
+                <property name="iconSize">
+                 <size>
+                  <width>50</width>
+                  <height>50</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </item>
@@ -150,6 +306,12 @@ QSlider::add-page:horizontal {
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="spacing">
              <number>20</number>
+            </property>
+            <property name="topMargin">
+             <number>20</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -169,7 +331,7 @@ QSlider::add-page:horizontal {
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>600</width>
+                  <width>700</width>
                   <height>400</height>
                  </size>
                 </property>
@@ -192,10 +354,13 @@ border-radius: 10px
             <item>
              <layout class="QVBoxLayout" name="verticalLayout">
               <property name="spacing">
-               <number>15</number>
+               <number>10</number>
               </property>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
                 <item>
                  <widget class="QPushButton" name="browse">
                   <property name="minimumSize">
@@ -266,10 +431,47 @@ border: 1px solid #ffffff;
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <layout class="QHBoxLayout" name="horizontalLayout_15">
+                  <item>
+                   <widget class="QLabel" name="label_6">
+                    <property name="styleSheet">
+                     <string notr="true">font-size: 16px;
+font-weight: bold;</string>
+                    </property>
+                    <property name="text">
+                     <string>Add Conjugates: </string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QCheckBox" name="addConjugates">
+                    <property name="minimumSize">
+                     <size>
+                      <width>20</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>20</width>
+                      <height>20</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
                </layout>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
                 <item>
                  <widget class="QPushButton" name="addZero">
                   <property name="minimumSize">
@@ -345,10 +547,48 @@ border: 1px solid #ffffff;
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QPushButton" name="removeZeros">
+                  <property name="minimumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string> Remove Zeros</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons_setup/icons.qrc">
+                    <normaloff>:/icons_setup/icons/delete.png</normaloff>:/icons_setup/icons/delete.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
                 <item>
                  <widget class="QPushButton" name="addPole">
                   <property name="minimumSize">
@@ -425,10 +665,118 @@ border: 1px solid #ffffff;
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QPushButton" name="removePoles">
+                  <property name="minimumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string> Remove Poles</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons_setup/icons.qrc">
+                    <normaloff>:/icons_setup/icons/delete.png</normaloff>:/icons_setup/icons/delete.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>20</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <property name="spacing">
+                 <number>10</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="swapZerosPoles">
+                  <property name="minimumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string> Zeros - Poles</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons_setup/icons.qrc">
+                    <normaloff>:/icons_setup/icons/swap.png</normaloff>:/icons_setup/icons/swap.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="swapPolesZeros">
+                  <property name="minimumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>300</width>
+                    <height>50</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string> Poles - Zeros</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="icons_setup/icons.qrc">
+                    <normaloff>:/icons_setup/icons/swap.png</normaloff>:/icons_setup/icons/swap.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>30</width>
+                    <height>30</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
                 <item>
                  <widget class="QPushButton" name="removeAll">
                   <property name="minimumSize">
@@ -464,17 +812,24 @@ border: 1px solid #ffffff;
                   </property>
                  </widget>
                 </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_6">
+                <property name="spacing">
+                 <number>20</number>
+                </property>
                 <item>
                  <widget class="QPushButton" name="undo">
                   <property name="minimumSize">
                    <size>
-                    <width>150</width>
+                    <width>450</width>
                     <height>50</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>150</width>
+                    <width>450</width>
                     <height>50</height>
                    </size>
                   </property>
@@ -503,13 +858,13 @@ border: 1px solid #ffffff;
                  <widget class="QPushButton" name="redo">
                   <property name="minimumSize">
                    <size>
-                    <width>150</width>
+                    <width>450</width>
                     <height>50</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>150</width>
+                    <width>450</width>
                     <height>50</height>
                    </size>
                   </property>
@@ -542,6 +897,9 @@ border: 1px solid #ffffff;
           </item>
           <item row="4" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
+            <property name="spacing">
+             <number>20</number>
+            </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <property name="spacing">
@@ -550,7 +908,7 @@ border: 1px solid #ffffff;
               <item>
                <widget class="QLabel" name="label_3">
                 <property name="styleSheet">
-                 <string notr="true">font-size: 20 px;
+                 <string notr="true">font-size: 20px;
 font-weight:bold;</string>
                 </property>
                 <property name="text">
@@ -569,7 +927,7 @@ font-weight:bold;</string>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>200</height>
+                  <height>180</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -596,7 +954,7 @@ border-radius: 10px
               <item>
                <widget class="QLabel" name="label_4">
                 <property name="styleSheet">
-                 <string notr="true">font-size: 20 px;
+                 <string notr="true">font-size: 20px;
 font-weight:bold;</string>
                 </property>
                 <property name="text">
@@ -615,7 +973,7 @@ font-weight:bold;</string>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>200</height>
+                  <height>180</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -638,6 +996,12 @@ border-radius: 10px
           </item>
           <item row="2" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="spacing">
+             <number>20</number>
+            </property>
+            <property name="topMargin">
+             <number>30</number>
+            </property>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <property name="spacing">
@@ -646,7 +1010,7 @@ border-radius: 10px
               <item>
                <widget class="QLabel" name="label">
                 <property name="styleSheet">
-                 <string notr="true">font-size: 20 px;
+                 <string notr="true">font-size: 20px;
 font-weight:bold;</string>
                 </property>
                 <property name="text">
@@ -665,7 +1029,7 @@ font-weight:bold;</string>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>200</height>
+                  <height>180</height>
                  </size>
                 </property>
                 <property name="maximumSize">
@@ -698,7 +1062,7 @@ border-radius: 10px
               <item>
                <widget class="QLabel" name="label_2">
                 <property name="styleSheet">
-                 <string notr="true">font-size: 20 px;
+                 <string notr="true">font-size: 20px;
 font-weight:bold;</string>
                 </property>
                 <property name="text">
@@ -717,7 +1081,7 @@ font-weight:bold;</string>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>200</height>
+                  <height>180</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -740,6 +1104,9 @@ border-radius: 10px
           </item>
           <item row="3" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_9">
+            <property name="topMargin">
+             <number>10</number>
+            </property>
             <item>
              <widget class="QPushButton" name="playPause">
               <property name="minimumSize">
@@ -759,7 +1126,7 @@ border-radius: 10px
               </property>
               <property name="icon">
                <iconset resource="icons_setup/icons.qrc">
-                <normaloff>:/icons_setup/icons/play.png</normaloff>:/icons_setup/icons/play.png</iconset>
+                <normaloff>:/icons_setup/icons/pause.png</normaloff>:/icons_setup/icons/pause.png</iconset>
               </property>
               <property name="iconSize">
                <size>
