@@ -15,6 +15,11 @@
     <file>..\icons_setup\icons\delete.png</file>
     <file>..\icons_setup\icons\pole.png</file>
     <file>..\icons_setup\icons\speed.png</file>
+    <file>..\icons_setup\icons\c.png</file>
+    <file>..\icons_setup\icons\blocks.png</file>
+    <file>..\icons_setup\icons\swap.png</file>
+    <file>..\icons_setup\icons\draw.png</file>
+    <file>..\icons_setup\icons\filters.png</file>
 
   </qresource>
 </RCC>
