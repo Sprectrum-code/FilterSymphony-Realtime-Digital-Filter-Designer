@@ -4,8 +4,8 @@ import numpy as np
 class Pole(pg.PlotDataItem):
     def __init__(self, data, conjugate = None):
         super().__init__([data[0]], [data[1]], symbol ='x')
-        self.real = data[0]
-        self.imaginary = data[1]
+        self.__real = data[0]
+        self.__imaginary = data[1]
         self.conjugate = conjugate
         self.identity = Type.POLE
         self.plots_control = None

@@ -13,6 +13,8 @@ class DesignerViewer(pg.PlotItem):
         self.zeros_list = []
         self.current_mode = Mode.ADD
         self.current_type = Type.ZERO
+        # self.setBackground((30, 41, 59))
+        self.showGrid(x= True, y= True , alpha = 0.25)
         
         self.setAspectLocked(True)
         self.setAcceptDrops(True)
