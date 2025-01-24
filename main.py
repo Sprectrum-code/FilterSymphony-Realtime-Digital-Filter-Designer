@@ -65,18 +65,18 @@ class MainWindow(QMainWindow):
         self.replay_signal_viewers_button = self.findChild(QPushButton , "replay")
         self.replay_signal_viewers_button.clicked.connect(self.replay_signal_viewers)
         
-        # Initialize signal viewers speed modifiers
-        self.speed_up_signal_viewer_button = self.findChild(QPushButton , "speedUp")
-        self.speed_up_signal_viewer_button.clicked.connect(self.speed_up_signal_viewers)
+        # # Initialize signal viewers speed modifiers
+        # self.speed_up_signal_viewer_button = self.findChild(QPushButton , "speedUp")
+        # self.speed_up_signal_viewer_button.clicked.connect(self.speed_up_signal_viewers)
         
-        self.speed_down_signal_viewer_button = self.findChild(QPushButton , "speedDown")
-        self.speed_down_signal_viewer_button.clicked.connect(self.speed_down_signal_viewers)
+        # self.speed_down_signal_viewer_button = self.findChild(QPushButton , "speedDown")
+        # self.speed_down_signal_viewer_button.clicked.connect(self.speed_down_signal_viewers)
         
         # controls initialization
-        self.add_zero_button = self.findChild(QPushButton, "addZero")
-        self.add_zero_button.clicked.connect(self.add_zero)
-        self.add_pole_button = self.findChild(QPushButton, "addPole")
-        self.add_pole_button.clicked.connect(self.add_pole)
+        # self.add_zero_button = self.findChild(QPushButton, "addZero")
+        # self.add_zero_button.clicked.connect(self.add_zero)
+        # self.add_pole_button = self.findChild(QPushButton, "addPole")
+        # self.add_pole_button.clicked.connect(self.add_pole)
         
     def toggle_play_pause_signal_viewers(self):
         self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
