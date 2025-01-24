@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1590</width>
-    <height>1108</height>
+    <width>1649</width>
+    <height>1065</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -172,7 +172,7 @@ font-weight:bold;</string>
                  </size>
                 </property>
                 <property name="toolTip">
-                 <string>Use Built-In Filters</string>
+                 <string>Use All-Pass Filters</string>
                 </property>
                 <property name="text">
                  <string/>
@@ -305,7 +305,7 @@ font-weight:bold;</string>
           <item row="1" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <property name="spacing">
-             <number>20</number>
+             <number>40</number>
             </property>
             <property name="topMargin">
              <number>20</number>
@@ -314,7 +314,7 @@ font-weight:bold;</string>
              <number>0</number>
             </property>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_2">
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
               <item>
                <widget class="QFrame" name="unitCircleFrame">
                 <property name="sizePolicy">
@@ -325,13 +325,13 @@ font-weight:bold;</string>
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>500</width>
+                  <width>400</width>
                   <height>350</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>700</width>
+                  <width>400</width>
                   <height>400</height>
                  </size>
                 </property>
@@ -357,21 +357,41 @@ border-radius: 10px
                <number>10</number>
               </property>
               <item>
+               <widget class="QLabel" name="label_12">
+                <property name="maximumSize">
+                 <size>
+                  <width>1111111</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font-size: 20px;
+font-weight: bold;</string>
+                </property>
+                <property name="text">
+                 <string>Controls</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
                <layout class="QHBoxLayout" name="horizontalLayout_5">
                 <property name="spacing">
-                 <number>10</number>
+                 <number>15</number>
                 </property>
                 <item>
                  <widget class="QPushButton" name="browse">
                   <property name="minimumSize">
                    <size>
-                    <width>300</width>
+                    <width>200</width>
                     <height>50</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>300</width>
+                    <width>200</width>
                     <height>50</height>
                    </size>
                   </property>
@@ -400,13 +420,13 @@ border: 1px solid #ffffff;
                  <widget class="QPushButton" name="save">
                   <property name="minimumSize">
                    <size>
-                    <width>300</width>
+                    <width>200</width>
                     <height>50</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>300</width>
+                    <width>200</width>
                     <height>50</height>
                    </size>
                   </property>
@@ -435,6 +455,12 @@ border: 1px solid #ffffff;
                  <layout class="QHBoxLayout" name="horizontalLayout_15">
                   <item>
                    <widget class="QLabel" name="label_6">
+                    <property name="maximumSize">
+                     <size>
+                      <width>180</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
                     <property name="styleSheet">
                      <string notr="true">font-size: 16px;
 font-weight: bold;</string>
@@ -470,117 +496,275 @@ font-weight: bold;</string>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_8">
                 <property name="spacing">
-                 <number>10</number>
+                 <number>40</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="addZero">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
+                 <layout class="QHBoxLayout" name="horizontalLayout_13">
+                  <property name="spacing">
+                   <number>0</number>
                   </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::RightToLeft</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-border: 1px solid #ffffff;
+                  <item>
+                   <widget class="QLabel" name="label_7">
+                    <property name="minimumSize">
+                     <size>
+                      <width>40</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>40</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">font-size: 16px;
 font-weight: bold;</string>
-                  </property>
-                  <property name="text">
-                   <string>Add  </string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/zero.png</normaloff>:/icons_setup/icons/zero.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </widget>
+                    </property>
+                    <property name="text">
+                     <string>Add</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="addComboBox">
+                    <property name="minimumSize">
+                     <size>
+                      <width>140</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>140</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    border: none;
+    margin-top: 0px;
+    font-size: 18px;
+}
+
+QComboBox {
+    background-color: #0f1729;
+    color: #ffffff;
+    border: none;                /* No border for the box */
+    border-bottom: 2px solid #ffffff; /* Border only at the bottom */
+    padding: 5px;                /* Padding for better spacing */
+}
+
+QComboBox::drop-down {
+    border-left: none; /* No additional border for the drop-down */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #0f1729;    /* Background color of dropdown items */
+    color: #ffffff;               /* Text color of dropdown items */
+    border: 1px solid #ffffff;    /* Border around the dropdown list */
+    selection-background-color: #1e293b;
+    selection-color: #ffffff;     /* Text color of the selected item */
+    padding: 5px;
+}
+</string>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Zero</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="icons_setup/icons.qrc">
+                       <normaloff>:/icons_setup/icons/zero.png</normaloff>:/icons_setup/icons/zero.png</iconset>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Pole</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="icons_setup/icons.qrc">
+                       <normaloff>:/icons_setup/icons/pole.png</normaloff>:/icons_setup/icons/pole.png</iconset>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="removeZero">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
+                 <layout class="QHBoxLayout" name="horizontalLayout_16">
+                  <property name="spacing">
+                   <number>0</number>
                   </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::RightToLeft</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
+                  <item>
+                   <widget class="QLabel" name="label_8">
+                    <property name="minimumSize">
+                     <size>
+                      <width>80</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>80</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">font-size: 16px;
+font-weight: bold;</string>
+                    </property>
+                    <property name="text">
+                     <string>Remove</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="removeComboBox">
+                    <property name="minimumSize">
+                     <size>
+                      <width>100</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>100</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    border: none;
+    margin-top: 0px;
+    font-size: 18px;
+}
+
+QComboBox {
+    background-color: #0f1729;
+    color: #ffffff;
+    border: none;                /* No border for the box */
+    border-bottom: 2px solid #ffffff; /* Border only at the bottom */
+    padding: 5px;                /* Padding for better spacing */
+}
+
+QComboBox::drop-down {
+    border-left: none; /* No additional border for the drop-down */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #0f1729;    /* Background color of dropdown items */
+    color: #ffffff;               /* Text color of dropdown items */
+    border: 1px solid #ffffff;    /* Border around the dropdown list */
+    selection-background-color: #1e293b;
+    selection-color: #ffffff;     /* Text color of the selected item */
+    padding: 5px;
+}
 </string>
-                  </property>
-                  <property name="text">
-                   <string>Remove  </string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/zero.png</normaloff>:/icons_setup/icons/zero.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </widget>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Poles</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Zeros</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>All</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="removeZeros">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
+                 <layout class="QHBoxLayout" name="horizontalLayout_14">
+                  <property name="spacing">
+                   <number>0</number>
                   </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
+                  <item>
+                   <widget class="QLabel" name="label_9">
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>0</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>16777215</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">font-size: 16px;
+font-weight: bold;</string>
+                    </property>
+                    <property name="text">
+                     <string>Swap</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QComboBox" name="swapComboBox">
+                    <property name="minimumSize">
+                     <size>
+                      <width>130</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>130</width>
+                      <height>50</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">* {
+    border: none;
+    margin-top: 0px;
+    font-size: 18px;
+}
+
+QComboBox {
+    background-color: #0f1729;
+    color: #ffffff;
+    border: none;                /* No border for the box */
+    border-bottom: 2px solid #ffffff; /* Border only at the bottom */
+    padding: 5px;                /* Padding for better spacing */
+}
+
+QComboBox::drop-down {
+    border-left: none; /* No additional border for the drop-down */
+}
+
+QComboBox QAbstractItemView {
+    background-color: #0f1729;    /* Background color of dropdown items */
+    color: #ffffff;               /* Text color of dropdown items */
+    border: 1px solid #ffffff;    /* Border around the dropdown list */
+    selection-background-color: #1e293b;
+    selection-color: #ffffff;     /* Text color of the selected item */
+    padding: 5px;
+}
 </string>
-                  </property>
-                  <property name="text">
-                   <string> Remove Zeros</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/delete.png</normaloff>:/icons_setup/icons/delete.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </widget>
+                    </property>
+                    <item>
+                     <property name="text">
+                      <string>Poles - Zeros</string>
+                     </property>
+                    </item>
+                    <item>
+                     <property name="text">
+                      <string>Zeros - Poles</string>
+                     </property>
+                    </item>
+                   </widget>
+                  </item>
+                 </layout>
                 </item>
                </layout>
               </item>
@@ -590,7 +774,7 @@ border: 1px solid #ffffff;
                  <number>10</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="addPole">
+                 <widget class="QPushButton" name="redo">
                   <property name="minimumSize">
                    <size>
                     <width>300</width>
@@ -603,9 +787,6 @@ border: 1px solid #ffffff;
                     <height>50</height>
                    </size>
                   </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::RightToLeft</enum>
-                  </property>
                   <property name="styleSheet">
                    <string notr="true">font-size: 16px;
 font-weight: bold;
@@ -613,11 +794,11 @@ border: 1px solid #ffffff;
 </string>
                   </property>
                   <property name="text">
-                   <string>Add  </string>
+                   <string> Redo</string>
                   </property>
                   <property name="icon">
                    <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/pole.png</normaloff>:/icons_setup/icons/pole.png</iconset>
+                    <normaloff>:/icons_setup/icons/redo.png</normaloff>:/icons_setup/icons/redo.png</iconset>
                   </property>
                   <property name="iconSize">
                    <size>
@@ -627,209 +808,17 @@ border: 1px solid #ffffff;
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QPushButton" name="removePole">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::RightToLeft</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Remove  </string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/pole.png</normaloff>:/icons_setup/icons/pole.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="removePoles">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string> Remove Poles</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/delete.png</normaloff>:/icons_setup/icons/delete.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_11">
-                <property name="spacing">
-                 <number>10</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="swapZerosPoles">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string> Zeros - Poles</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/swap.png</normaloff>:/icons_setup/icons/swap.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>30</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="swapPolesZeros">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string> Poles - Zeros</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/swap.png</normaloff>:/icons_setup/icons/swap.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>30</width>
-                    <height>30</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="removeAll">
-                  <property name="minimumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string> Remove All</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/delete.png</normaloff>:/icons_setup/icons/delete.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>20</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_6">
-                <property name="spacing">
-                 <number>20</number>
-                </property>
                 <item>
                  <widget class="QPushButton" name="undo">
                   <property name="minimumSize">
                    <size>
-                    <width>450</width>
+                    <width>300</width>
                     <height>50</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>450</width>
+                    <width>300</width>
                     <height>50</height>
                    </size>
                   </property>
@@ -854,18 +843,55 @@ border: 1px solid #ffffff;
                   </property>
                  </widget>
                 </item>
+               </layout>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_2">
+              <item>
+               <widget class="QLabel" name="label_11">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>50</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font-size: 20px;
+font-weight: bold;</string>
+                </property>
+                <property name="text">
+                 <string>Apply A Filter</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_11">
+                <property name="spacing">
+                 <number>15</number>
+                </property>
                 <item>
-                 <widget class="QPushButton" name="redo">
+                 <widget class="QPushButton" name="pushButton_2">
                   <property name="minimumSize">
                    <size>
-                    <width>450</width>
-                    <height>50</height>
+                    <width>150</width>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>450</width>
-                    <height>50</height>
+                    <width>150</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -875,17 +901,253 @@ border: 1px solid #ffffff;
 </string>
                   </property>
                   <property name="text">
-                   <string> Redo</string>
+                   <string>Filter 01</string>
                   </property>
-                  <property name="icon">
-                   <iconset resource="icons_setup/icons.qrc">
-                    <normaloff>:/icons_setup/icons/redo.png</normaloff>:/icons_setup/icons/redo.png</iconset>
-                  </property>
-                  <property name="iconSize">
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_3">
+                  <property name="minimumSize">
                    <size>
-                    <width>20</width>
-                    <height>20</height>
+                    <width>150</width>
+                    <height>0</height>
                    </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 02</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 03</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_18">
+                <property name="spacing">
+                 <number>15</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_5">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 04</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 05</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_4">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 06</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_19">
+                <property name="spacing">
+                 <number>15</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_9">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 07</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_8">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 08</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="pushButton_7">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 09</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <layout class="QHBoxLayout" name="horizontalLayout_17">
+                <property name="spacing">
+                 <number>15</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="pushButton_10">
+                  <property name="minimumSize">
+                   <size>
+                    <width>480</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>480</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-size: 16px;
+font-weight: bold;
+border: 1px solid #ffffff;
+</string>
+                  </property>
+                  <property name="text">
+                   <string>Filter 10</string>
                   </property>
                  </widget>
                 </item>
@@ -1166,72 +1428,38 @@ border-radius: 10px
              </widget>
             </item>
             <item>
-             <widget class="QPushButton" name="speedUp">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font-size: 30px;
-font-weight:bold
-</string>
-              </property>
-              <property name="text">
-               <string> +</string>
-              </property>
-              <property name="icon">
-               <iconset resource="icons_setup/icons.qrc">
-                <normaloff>:/icons_setup/icons/speed.png</normaloff>:/icons_setup/icons/speed.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>25</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QPushButton" name="speedDown">
-              <property name="minimumSize">
-               <size>
-                <width>100</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>100</width>
-                <height>70</height>
-               </size>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">font-size: 30px;
-font-weight:bold
-</string>
-              </property>
-              <property name="text">
-               <string> -</string>
-              </property>
-              <property name="icon">
-               <iconset resource="icons_setup/icons.qrc">
-                <normaloff>:/icons_setup/icons/speed.png</normaloff>:/icons_setup/icons/speed.png</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>25</width>
-                <height>25</height>
-               </size>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_6">
+              <item>
+               <widget class="QLabel" name="label_10">
+                <property name="maximumSize">
+                 <size>
+                  <width>65</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font-size: 16px;
+font-weight: bold;</string>
+                </property>
+                <property name="text">
+                 <string>Speed:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSlider" name="speedSlider">
+                <property name="maximumSize">
+                 <size>
+                  <width>600</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
