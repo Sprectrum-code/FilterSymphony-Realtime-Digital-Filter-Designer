@@ -7,7 +7,11 @@ from helper_function.compile_qrc import compile_qrc
 from classes.signalViewer import SignalViewer
 from classes.controller import Controller
 from classes.customSignal import CustomSignal
+from classes.designerViewer import DesignerViewer 
 import numpy as np
+import pyqtgraph as pg
+from enums.modesEnum import Mode
+from enums.types import Type
 
 compile_qrc()
 from icons_setup.compiledIcons import *
@@ -40,6 +44,16 @@ class MainWindow(QMainWindow):
         y = np.sin(x)
         self.current_signal = CustomSignal(x , y)
         
+        # initialize the filter designer viewer
+        self.designer_viewer = DesignerViewer()
+        self.graphics_layout = pg.GraphicsLayoutWidget()
+        self.graphics_layout.setBackground((30, 41, 59))
+        self.graphics_layout.addItem(self.designer_viewer)
+        self.designer_frame = self.findChild(QFrame,"unitCircleFrame")
+        self.designer_frame_layout = QVBoxLayout()
+        self.designer_frame.setLayout(self.designer_frame_layout)
+        self.designer_frame_layout.addWidget(self.graphics_layout)
+        
         # Initialize the controller
         self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)
         
@@ -58,6 +72,12 @@ class MainWindow(QMainWindow):
         self.speed_down_signal_viewer_button = self.findChild(QPushButton , "speedDown")
         self.speed_down_signal_viewer_button.clicked.connect(self.speed_down_signal_viewers)
         
+        # controls initialization
+        self.add_zero_button = self.findChild(QPushButton, "addZero")
+        self.add_zero_button.clicked.connect(self.add_zero)
+        self.add_pole_button = self.findChild(QPushButton, "addPole")
+        self.add_pole_button.clicked.connect(self.add_pole)
+        
     def toggle_play_pause_signal_viewers(self):
         self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
     
@@ -69,6 +89,14 @@ class MainWindow(QMainWindow):
     
     def speed_down_signal_viewers(self):
         self.controller.speed_down_signal_viewers()
+    
+    def add_zero(self):
+        self.designer_viewer.current_mode = Mode.ADD
+        self.designer_viewer.current_type = Type.ZERO
+    def add_pole(self):
+        self.designer_viewer.current_mode = Mode.ADD
+        self.designer_viewer.current_type = Type.POLE
+        
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
