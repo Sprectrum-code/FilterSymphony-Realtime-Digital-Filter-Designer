@@ -6,6 +6,7 @@ from classes.pole import Pole
 from classes.zero import Zero
 from enums.types import Type
 from enums.modesEnum import Mode
+from copy import deepcopy
 class DesignerViewer(pg.PlotItem):
     def __init__(self):
         super().__init__()
@@ -56,6 +57,7 @@ class DesignerViewer(pg.PlotItem):
                 self.addItem(conj_zero)
             zero_tuple = (new_zero, new_zero.conjugate)
             self.zeros_list.append(zero_tuple)
+            
         
     def mouseDoubleClickEvent(self,event):
         local_pos = self.vb.mapSceneToView(event.scenePos())
@@ -70,6 +72,19 @@ class DesignerViewer(pg.PlotItem):
             pass
         
         print(f"Clicked at: x={x}, y={y}")
+        
+    def mousePressEvent(self, event):
+        if event.button() != QtCore.Qt.RightButton:
+            event.ignore()
+            return
+        else:
+            # pos = event.buttonDownScenePos(QtCore.Qt.RightButton)
+            local_pos = self.vb.mapSceneToView(event.scenePos())
+            for i , item in enumerate(self.dataItems):
+                if i != 0:
+                    if abs(item.real - local_pos.x()) < 0.05 and abs(item.imaginary - local_pos.y()) < 0.05:
+                        self.remove_item(item)
+                        break
         
     def mouseDragEvent(self, event):
         if event.button() != QtCore.Qt.LeftButton: # ignoring anything not the left button 
@@ -103,6 +118,65 @@ class DesignerViewer(pg.PlotItem):
                     data_list[self.dragIndex].conjugate.real = local_pos.x()
                     data_list[self.dragIndex].conjugate.imaginary = -local_pos.y()
                 self.update()
+                
+    def remove_item(self, item):
+        self.removeItem(item)
+        if item.conjugate is not None:
+            self.removeItem(item.conjugate)
+        if isinstance(item, Zero):
+            self.zeros_list.remove((item, item.conjugate))
+        else:
+            self.poles_list.remove((item, item.conjugate))
+        self.update()
+                
+    def remove_all_zeros(self):
+        for (item, conj_item) in self.zeros_list:
+            if isinstance(item,Zero):
+                self.removeItem(item)
+                if conj_item:
+                    self.removeItem(conj_item)
+        self.zeros_list.clear()
+        
+    def remove_all_poles(self):
+        for (item, conj_item) in self.poles_list:
+            if isinstance(item,Pole):
+                self.removeItem(item)
+                if conj_item:
+                    self.removeItem(conj_item)
+        self.poles_list.clear()
+                
+    def remove_all(self):
+        self.remove_all_zeros()
+        self.remove_all_poles()
+        
+    def swap(self, mode_text):
+        if mode_text == "Poles - Zeros":
+            for (item, conj_item) in self.poles_list:
+                new_zero_conj = None
+                new_zero = Zero((item.real, item.imaginary))
+                self.removeItem(item)
+                self.addItem(new_zero)
+                if conj_item:
+                    new_zero_conj = Zero((conj_item.real, conj_item.imaginary))
+                    new_zero.conjugate = new_zero_conj
+                    new_zero_conj.conjugate = new_zero
+                    self.removeItem(conj_item)
+                    self.addItem(new_zero_conj)
+                self.zeros_list.append((new_zero, new_zero_conj))
+        else:
+            for (item, conj_item) in self.zeros_list:
+                new_pole_conj = None
+                new_pole = Pole((item.real, item.imaginary))
+                self.removeItem(item)
+                self.addItem(new_pole)
+                if conj_item:
+                    new_pole_conj = Pole((conj_item.real, conj_item.imaginary))
+                    new_pole.conjugate = new_pole_conj
+                    new_pole_conj.conjugate = new_pole
+                    self.removeItem(conj_item)
+                    self.addItem(new_pole_conj)
+                self.poles_list.append((new_pole, new_pole_conj))
+        
 
 
         
