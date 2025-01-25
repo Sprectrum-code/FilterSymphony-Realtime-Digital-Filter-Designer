@@ -14,6 +14,7 @@ class DesignerViewer(pg.PlotItem):
         self.zeros_list = []
         self.current_mode = Mode.ADD
         self.current_type = Type.ZERO
+        self.conjugate_mode = True
         # self.setBackground((30, 41, 59))
         self.showGrid(x= True, y= True , alpha = 0.25)
         
@@ -38,7 +39,7 @@ class DesignerViewer(pg.PlotItem):
         if self.current_type == Type.POLE:
             new_pole = Pole(coordinates)
             self.addItem(new_pole)
-            if conjugate:
+            if self.conjugate_mode:
                 conj_coordinates = (coordinates[0], -coordinates[1])
                 conj_pole = Pole(conj_coordinates)
                 new_pole.conjugate = conj_pole
@@ -49,7 +50,7 @@ class DesignerViewer(pg.PlotItem):
         else:
             new_zero = Zero(coordinates)
             self.addItem(new_zero)
-            if conjugate:
+            if self.conjugate_mode:
                 conj_coordinates = (coordinates[0], -coordinates[1])
                 conj_zero = Zero(conj_coordinates)
                 new_zero.conjugate = conj_zero

@@ -77,7 +77,7 @@ class MainWindow(QMainWindow):
         self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
         
         self.conjugates_checkbox = self.findChild(QCheckBox, "addConjugates")
-        self.conjugates_checkbox.stateChanged.connect()
+        self.conjugates_checkbox.stateChanged.connect(self.conjugates_listener)
         
         # # Initialize signal viewers speed modifiers
         # self.speed_up_signal_viewer_button = self.findChild(QPushButton , "speedUp")
@@ -130,8 +130,12 @@ class MainWindow(QMainWindow):
     def swap_listener(self):
         self.designer_viewer.swap(self.swap_combobox.currentText())
         
-    # def conjugates_listener(self):
-    #     self.conjugates_checkbox.state
+    def conjugates_listener(self):
+        if self.conjugates_checkbox.isChecked():
+            self.designer_viewer.conjugate_mode = True
+        else:
+            self.designer_viewer.conjugate_mode = False
+            
             
         
         
