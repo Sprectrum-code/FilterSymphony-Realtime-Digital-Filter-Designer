@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame , QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame , QPushButton, QComboBox, QCheckBox
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -65,6 +65,20 @@ class MainWindow(QMainWindow):
         self.replay_signal_viewers_button = self.findChild(QPushButton , "replay")
         self.replay_signal_viewers_button.clicked.connect(self.replay_signal_viewers)
         
+        # initialize the zero pole combo box 
+        self.add_element_combobox = self.findChild(QComboBox, "addComboBox")
+        self.add_element_combobox.currentIndexChanged.connect(self.add_element_combobox_listener)
+        
+        # initialize the removing combobox 
+        self.removal_combobox = self.findChild(QComboBox,"removeComboBox")
+        self.removal_combobox.currentIndexChanged.connect(self.remove_listener)
+        
+        self.swap_combobox = self.findChild(QComboBox, "swapComboBox")
+        self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
+        
+        self.conjugates_checkbox = self.findChild(QCheckBox, "addConjugates")
+        self.conjugates_checkbox.stateChanged.connect()
+        
         # # Initialize signal viewers speed modifiers
         # self.speed_up_signal_viewer_button = self.findChild(QPushButton , "speedUp")
         # self.speed_up_signal_viewer_button.clicked.connect(self.speed_up_signal_viewers)
@@ -89,6 +103,12 @@ class MainWindow(QMainWindow):
     
     def speed_down_signal_viewers(self):
         self.controller.speed_down_signal_viewers()
+        
+    def add_element_combobox_listener(self):
+        if self.add_element_combobox.currentText() == 'Zero':
+            self.add_zero()
+        else:
+            self.add_pole()
     
     def add_zero(self):
         self.designer_viewer.current_mode = Mode.ADD
@@ -96,6 +116,23 @@ class MainWindow(QMainWindow):
     def add_pole(self):
         self.designer_viewer.current_mode = Mode.ADD
         self.designer_viewer.current_type = Type.POLE
+        
+    def remove_listener(self):
+        print(self.removal_combobox.currentText)
+        if self.removal_combobox.currentText() == "Zeros":
+            self.designer_viewer.remove_all_zeros()
+            print("zero rem")
+        elif self.removal_combobox.currentText() == "Poles":
+            self.designer_viewer.remove_all_poles()
+        else:
+            self.designer_viewer.remove_all()
+    
+    def swap_listener(self):
+        self.designer_viewer.swap(self.swap_combobox.currentText())
+        
+    # def conjugates_listener(self):
+    #     self.conjugates_checkbox.state
+            
         
         
 if __name__ == '__main__':
