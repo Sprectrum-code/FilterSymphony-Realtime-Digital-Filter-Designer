@@ -37,13 +37,9 @@ class Controller():
         self.pre_signal_viewer.current_signal_plotting_index = 0
         self.post_signal_viewer.current_signal_plotting_index = 0
     
-    def speed_up_signal_viewers(self):
-        self.pre_signal_viewer.increase_speed()
-        self.post_signal_viewer.increase_speed()
-    
-    def speed_down_signal_viewers(self):
-        self.pre_signal_viewer.decrease_speed()
-        self.post_signal_viewer.decrease_speed()
+    def modify_signal_viewers_speed(self , new_speed):
+        self.pre_signal_viewer.change_viewer_speed(new_speed)
+        self.post_signal_viewer.change_viewer_speed(new_speed)
     
     def compute_new_filter(self, zeros , poles):
         # print(zeros[0][0].real)
