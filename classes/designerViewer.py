@@ -7,7 +7,7 @@ from classes.zero import Zero
 from enums.types import Type
 from enums.modesEnum import Mode
 class DesignerViewer(pg.PlotItem):
-    def __init__(self):
+    def __init__(self , controller):
         super().__init__()
         self.poles_list = []
         self.zeros_list = []
@@ -25,6 +25,8 @@ class DesignerViewer(pg.PlotItem):
         self.conjIndex = -1
         self.dragOffset = 0
         self.plot_item_control = None
+        
+        self.controller = controller
         
         #events
     def plot_unit_circle(self):
@@ -56,6 +58,7 @@ class DesignerViewer(pg.PlotItem):
                 self.addItem(conj_zero)
             zero_tuple = (new_zero, new_zero.conjugate)
             self.zeros_list.append(zero_tuple)
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         
     def mouseDoubleClickEvent(self,event):
         local_pos = self.vb.mapSceneToView(event.scenePos())

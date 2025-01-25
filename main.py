@@ -41,11 +41,14 @@ class MainWindow(QMainWindow):
         
         # Initialize the signal
         x = np.linspace(0, 10 * np.pi, 1000)
-        y = np.sin(x)
+        y = np.sin(2*np.pi*x)
         self.current_signal = CustomSignal(x , y)
         
+        # Initialize the controller
+        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)
+        
         # initialize the filter designer viewer
-        self.designer_viewer = DesignerViewer()
+        self.designer_viewer = DesignerViewer(self.controller)
         self.graphics_layout = pg.GraphicsLayoutWidget()
         self.graphics_layout.setBackground((30, 41, 59))
         self.graphics_layout.addItem(self.designer_viewer)
@@ -53,9 +56,6 @@ class MainWindow(QMainWindow):
         self.designer_frame_layout = QVBoxLayout()
         self.designer_frame.setLayout(self.designer_frame_layout)
         self.designer_frame_layout.addWidget(self.graphics_layout)
-        
-        # Initialize the controller
-        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)
         
         # Initialize play and pause buttons
         self.signal_viewer_play_pause_button = self.findChild(QPushButton , "playPause")
