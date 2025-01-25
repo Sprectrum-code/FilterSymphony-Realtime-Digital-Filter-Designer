@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame , QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame , QPushButton, QComboBox
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -65,6 +65,10 @@ class MainWindow(QMainWindow):
         self.replay_signal_viewers_button = self.findChild(QPushButton , "replay")
         self.replay_signal_viewers_button.clicked.connect(self.replay_signal_viewers)
         
+        # initialize the zero pole combo box 
+        self.add_element_combobox = self.findChild(QComboBox, "addComboBox")
+        self.add_element_combobox.currentIndexChanged.connect(self.add_element_combobox_listener)
+        
         # # Initialize signal viewers speed modifiers
         # self.speed_up_signal_viewer_button = self.findChild(QPushButton , "speedUp")
         # self.speed_up_signal_viewer_button.clicked.connect(self.speed_up_signal_viewers)
@@ -89,6 +93,12 @@ class MainWindow(QMainWindow):
     
     def speed_down_signal_viewers(self):
         self.controller.speed_down_signal_viewers()
+        
+    def add_element_combobox_listener(self):
+        if self.add_element_combobox.currentText() == 'Zero':
+            self.add_zero()
+        else:
+            self.add_pole()
     
     def add_zero(self):
         self.designer_viewer.current_mode = Mode.ADD
