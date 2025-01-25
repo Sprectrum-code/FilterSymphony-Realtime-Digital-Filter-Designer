@@ -8,7 +8,7 @@ class SignalViewer(Viewer):
         self.__current_signal = [[],[]]
         self.__current_signal_plotting_index = 0
         self.timer = QTimer()
-        self.__cine_speed = 100
+        self.__cine_speed = 50
         self.timer.timeout.connect(self.update_plot)
         self.timer.start(self.__cine_speed)
         self.setLimits(xMin = 0)
@@ -62,11 +62,6 @@ class SignalViewer(Viewer):
         else:
             self.timer.stop()
     
-    def increase_speed(self):
-        if(self.cine_speed > 10):
-            self.cine_speed -= 10
-            self.play_timer()
-    
-    def decrease_speed(self):
-        self.cine_speed += 10    
+    def change_viewer_speed(self , speed_value):
+        self.cine_speed = speed_value
         self.play_timer()

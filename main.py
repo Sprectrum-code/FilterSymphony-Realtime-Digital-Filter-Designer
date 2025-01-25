@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame , QPushButton, QComboBox, QCheckBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -41,11 +41,14 @@ class MainWindow(QMainWindow):
         
         # Initialize the signal
         x = np.linspace(0, 10 * np.pi, 1000)
-        y = np.sin(x)
+        y = np.sin(2*np.pi*x)
         self.current_signal = CustomSignal(x , y)
         
+        # Initialize the controller
+        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)
+        
         # initialize the filter designer viewer
-        self.designer_viewer = DesignerViewer()
+        self.designer_viewer = DesignerViewer(self.controller)
         self.graphics_layout = pg.GraphicsLayoutWidget()
         self.graphics_layout.setBackground((30, 41, 59))
         self.graphics_layout.addItem(self.designer_viewer)
@@ -53,9 +56,6 @@ class MainWindow(QMainWindow):
         self.designer_frame_layout = QVBoxLayout()
         self.designer_frame.setLayout(self.designer_frame_layout)
         self.designer_frame_layout.addWidget(self.graphics_layout)
-        
-        # Initialize the controller
-        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)
         
         # Initialize play and pause buttons
         self.signal_viewer_play_pause_button = self.findChild(QPushButton , "playPause")
@@ -79,12 +79,11 @@ class MainWindow(QMainWindow):
         self.conjugates_checkbox = self.findChild(QCheckBox, "addConjugates")
         self.conjugates_checkbox.stateChanged.connect(self.conjugates_listener)
         
-        # # Initialize signal viewers speed modifiers
-        # self.speed_up_signal_viewer_button = self.findChild(QPushButton , "speedUp")
-        # self.speed_up_signal_viewer_button.clicked.connect(self.speed_up_signal_viewers)
-        
-        # self.speed_down_signal_viewer_button = self.findChild(QPushButton , "speedDown")
-        # self.speed_down_signal_viewer_button.clicked.connect(self.speed_down_signal_viewers)
+        # Initialize signal viewers speed modifiers
+        self.signal_viewers_speed_slider = self.findChild(QSlider , "speedSlider")
+        self.signal_viewers_speed_slider.setRange(10,100)
+        self.signal_viewers_speed_slider.setValue(50)
+        self.signal_viewers_speed_slider.sliderMoved.connect(self.modify_signal_viewers_speed)
         
         # controls initialization
         # self.add_zero_button = self.findChild(QPushButton, "addZero")
@@ -98,11 +97,9 @@ class MainWindow(QMainWindow):
     def replay_signal_viewers(self):
         self.controller.replay_signal_viewers()
         
-    def speed_up_signal_viewers(self):
-        self.controller.speed_up_signal_viewers()
-    
-    def speed_down_signal_viewers(self):
-        self.controller.speed_down_signal_viewers()
+    def modify_signal_viewers_speed(self , slider_speed_value):
+        slider_speed_value = 110 - slider_speed_value
+        self.controller.modify_signal_viewers_speed(slider_speed_value)
         
     def add_element_combobox_listener(self):
         if self.add_element_combobox.currentText() == 'Zero':
