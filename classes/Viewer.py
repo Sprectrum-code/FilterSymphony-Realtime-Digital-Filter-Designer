@@ -36,17 +36,19 @@ class Viewer(pg.PlotWidget):
     
     def update_signal(self):
         self.clear()
-        self.plotItem(self.current_signal.signal[0], self.current_signal.signal[1])
+        self.plot(self.current_signal.signal[0], self.current_signal.signal[1], pen = pg.mkPen('r'))
     
     
     def compute_phase(self, poles_list, zeros_list):
         poles, zeros = self.format_pole_zero_lists(poles_list, zeros_list)
         frequencies,H = self.compute_numerator_and_denominator(poles, zeros)
-        magnitude = np.abs(H)
+        magnitude = np.angle(H)
         self.current_signal =  CustomSignal(frequencies, magnitude)
+        self.update_signal()
     
     def compute_magnitude(self, poles_list, zeros_list):
         poles, zeros = self.format_pole_zero_lists(poles_list, zeros_list)
         frequencies,H = self.compute_numerator_and_denominator(poles, zeros)
-        phase = np.angle(H)
+        phase = np.abs(H)
         self.current_signal = CustomSignal(frequencies, phase)
+        self.update_signal()

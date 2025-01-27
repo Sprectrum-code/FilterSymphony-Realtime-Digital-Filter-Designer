@@ -16,10 +16,14 @@ class Controller():
         self.complex_poles = []
         self.filter_numerator = 0
         self.filter_denominator = 0
+        self.magnitude_viewer = None
+        self.phase_viewer = None
+        self.designer_viewer = None
     
     def set_current_signal(self):
         self.pre_signal_viewer.current_signal = self.current_signal
         self.post_signal_viewer.current_signal = self.filtered_signal
+        self.compute_magnitude_and_phase()
         
     def toggle_play_pause_signal_viewers(self , play_pause_button):
         if(self.is_signal_viewers_playing):
@@ -32,6 +36,11 @@ class Controller():
             self.post_signal_viewer.play_timer()
             self.is_signal_viewers_playing = True
             play_pause_button.setIcon(self.pauseIcon)
+            
+    def compute_magnitude_and_phase(self):
+        self.magnitude_viewer.compute_magnitude(self.designer_viewer.poles_list, self.designer_viewer.zeros_list)
+        self.phase_viewer.compute_phase(self.designer_viewer.poles_list, self.designer_viewer.zeros_list)
+        
     
     def replay_signal_viewers(self):
         self.pre_signal_viewer.current_signal_plotting_index = 0

@@ -121,6 +121,10 @@ class MainWindow(QMainWindow):
         self.phase_signal_frame_layout = QVBoxLayout()
         self.phase_signal_frame.setLayout(self.phase_signal_frame_layout)
         self.phase_signal_frame_layout.addWidget(self.phase_viewer)
+        
+        self.controller.magnitude_viewer = self.magnitude_viewer
+        self.controller.phase_viewer = self.phase_viewer
+        self.controller.designer_viewer = self.designer_viewer
     
         self.digital_filter_3_button = self.findChild(QPushButton , "pushButton")
         self.digital_filter_3_button.clicked.connect(self.get_digital_filter3_components)
