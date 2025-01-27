@@ -106,8 +106,14 @@ class MainWindow(QMainWindow):
         self.removal_combobox = self.findChild(QComboBox,"removeComboBox")
         self.removal_combobox.currentIndexChanged.connect(self.remove_listener)
         
+        self.removal_button = self.findChild(QPushButton, "pushButton_18")
+        self.removal_button.clicked.connect(self.remove_listener)
+        
         self.swap_combobox = self.findChild(QComboBox, "swapComboBox")
         self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
+        
+        self.swap_button = self.findChild(QPushButton, "pushButton_27")
+        self.swap_button.clicked.connect(self.swap_listener)
         
         self.conjugates_checkbox = self.findChild(QCheckBox, "addConjugates")
         self.conjugates_checkbox.stateChanged.connect(self.conjugates_listener)
@@ -266,18 +272,22 @@ class MainWindow(QMainWindow):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap10"))
         self.controller.calculate_all_pass_filter_phase()
         self.controller.calculate_corrected_phase()
+    
     def apply_ap_filter_6(self):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap6"))
         self.controller.calculate_all_pass_filter_phase()
         self.controller.calculate_corrected_phase()
+    
     def apply_ap_filter_7(self):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap7"))
         self.controller.calculate_all_pass_filter_phase()
         self.controller.calculate_corrected_phase()
+    
     def apply_ap_filter_8(self):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap8"))
         self.controller.calculate_all_pass_filter_phase()
         self.controller.calculate_corrected_phase()
+    
     def apply_ap_filter_9(self):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap9"))
         self.controller.calculate_all_pass_filter_phase()
