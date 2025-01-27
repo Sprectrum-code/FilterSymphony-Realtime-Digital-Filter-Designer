@@ -8,6 +8,7 @@ from classes.signalViewer import SignalViewer
 from classes.controller import Controller
 from classes.customSignal import CustomSignal
 from classes.designerViewer import DesignerViewer 
+from classes.digitalFiltersLibrary import DigitalFilters
 import numpy as np
 import pyqtgraph as pg
 from enums.modesEnum import Mode
@@ -57,6 +58,9 @@ class MainWindow(QMainWindow):
         self.designer_frame.setLayout(self.designer_frame_layout)
         self.designer_frame_layout.addWidget(self.graphics_layout)
         
+        # Initialize Digital Filters Library
+        self.digital_filters_library = DigitalFilters()
+        
         # Initialize play and pause buttons
         self.signal_viewer_play_pause_button = self.findChild(QPushButton , "playPause")
         self.signal_viewer_play_pause_button.clicked.connect(self.toggle_play_pause_signal_viewers)
@@ -90,6 +94,32 @@ class MainWindow(QMainWindow):
         # self.add_zero_button.clicked.connect(self.add_zero)
         # self.add_pole_button = self.findChild(QPushButton, "addPole")
         # self.add_pole_button.clicked.connect(self.add_pole)
+        
+        # Initialize filter 1 button
+        self.digital_filter_1_button = self.findChild(QPushButton , "pushButton_2")
+        self.digital_filter_1_button.clicked.connect(self.apply_filter_1)
+    
+    def apply_filter_1(self):
+        zeros , poles = self.digital_filters_library.butterworth_lowpass()
+        current_mode = self.designer_viewer.current_mode
+        current_type = self.designer_viewer.current_type
+        current_conjugate_mode = self.designer_viewer.conjugate_mode
+        
+        self.designer_viewer.current_mode = Mode.ADD
+        self.designer_viewer.current_type = Type.ZERO
+        self.designer_viewer.conjugate_mode = True
+        
+        for zero in zeros:    
+            self.designer_viewer.add_element(zero)
+        self.designer_viewer.current_type = Type.POLE
+        for pole in poles:
+            print(pole)
+            self.designer_viewer.add_element(pole)
+
+        self.designer_viewer.current_type = current_type
+        self.designer_viewer.current_mode = current_mode
+        self.designer_viewer.conjugate_mode = current_conjugate_mode
+        print(self.designer_viewer.poles_list)
         
     def toggle_play_pause_signal_viewers(self):
         self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
