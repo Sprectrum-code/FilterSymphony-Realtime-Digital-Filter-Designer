@@ -103,9 +103,12 @@ class MainWindow(QMainWindow):
         # self.add_pole_button = self.findChild(QPushButton, "addPole")
         # self.add_pole_button.clicked.connect(self.add_pole)
         
-        # Initialize filter 1 button
+        # Initialize digital filters buttons
         self.digital_filter_1_button = self.findChild(QPushButton , "pushButton_2")
-        self.digital_filter_1_button.clicked.connect(self.apply_filter_1)
+        self.digital_filter_1_button.clicked.connect(self.get_digital_filter1_components)
+
+        self.digital_filter_2_button = self.findChild(QPushButton , "pushButton_3")
+        self.digital_filter_2_button.clicked.connect(self.get_digital_filter2_components)
         
         self.magnitude_viewer = Viewer()
         self.magnitude_signal_frame = self.findChild(QFrame, 'amplitudeFrame')
@@ -119,8 +122,67 @@ class MainWindow(QMainWindow):
         self.phase_signal_frame.setLayout(self.phase_signal_frame_layout)
         self.phase_signal_frame_layout.addWidget(self.phase_viewer)
     
-    def apply_filter_1(self):
+        self.digital_filter_3_button = self.findChild(QPushButton , "pushButton")
+        self.digital_filter_3_button.clicked.connect(self.get_digital_filter3_components)
+
+        self.digital_filter_4_button = self.findChild(QPushButton , "pushButton_5")
+        self.digital_filter_4_button.clicked.connect(self.get_digital_filter4_components)
+
+        self.digital_filter_5_button = self.findChild(QPushButton , "pushButton_6")
+        self.digital_filter_5_button.clicked.connect(self.get_digital_filter5_components)
+
+        self.digital_filter_6_button = self.findChild(QPushButton , "pushButton_4")
+        self.digital_filter_6_button.clicked.connect(self.get_digital_filter6_components)
+
+        self.digital_filter_7_button = self.findChild(QPushButton , "pushButton_9")
+        self.digital_filter_7_button.clicked.connect(self.get_digital_filter7_components)
+
+        self.digital_filter_8_button = self.findChild(QPushButton , "pushButton_8")
+        self.digital_filter_8_button.clicked.connect(self.get_digital_filter8_components)
+
+        self.digital_filter_9_button = self.findChild(QPushButton , "pushButton_7")
+        self.digital_filter_9_button.clicked.connect(self.get_digital_filter9_components)
+
+        self.digital_filter_10_button = self.findChild(QPushButton , "pushButton_10")
+        self.digital_filter_10_button.clicked.connect(self.get_digital_filter10_components)
+
+    
+    def get_digital_filter1_components(self):
         zeros , poles = self.digital_filters_library.butterworth_lowpass()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter2_components(self):
+        zeros , poles = self.digital_filters_library.chebyshev1_lowpass()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter3_components(self):
+        zeros , poles = self.digital_filters_library.chebyshev2_lowpass()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter4_components(self):
+        zeros , poles = self.digital_filters_library.elliptic_lowpass()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter5_components(self):
+        zeros , poles = self.digital_filters_library.bessel_lowpass()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter6_components(self):
+        zeros , poles = self.digital_filters_library.notch_filter()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter7_components(self):
+        zeros , poles = self.digital_filters_library.bandpass_filter()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter8_components(self):
+        zeros , poles = self.digital_filters_library.highpass_filter()
+        self.apply_digital_filter(zeros , poles)
+    
+    def get_digital_filter9_components(self):
+        zeros , poles = self.digital_filters_library.bandstop_filter()
+        zeros = sorted(zeros , key = lambda x: x[0])
+        zeros = zeros[:4]
         current_mode = self.designer_viewer.current_mode
         current_type = self.designer_viewer.current_type
         current_conjugate_mode = self.designer_viewer.conjugate_mode
@@ -133,13 +195,50 @@ class MainWindow(QMainWindow):
             self.designer_viewer.add_element(zero)
         self.designer_viewer.current_type = Type.POLE
         for pole in poles:
-            print(pole)
+            self.designer_viewer.add_element(pole)
+
+        self.designer_viewer.current_type = current_type
+        self.designer_viewer.current_mode = current_mode
+        self.designer_viewer.conjugate_mode = current_conjugate_mode    
+    
+    def get_digital_filter10_components(self):
+        zeros , poles = self.digital_filters_library.gaussian_filter()
+        self.apply_digital_filter(zeros , poles)
+    
+    
+    
+    def apply_digital_filter(self, zeros ,poles):
+        zeros , poles = self.handle_zeros_and_poles_duplicates(zeros , poles)
+        current_mode = self.designer_viewer.current_mode
+        current_type = self.designer_viewer.current_type
+        current_conjugate_mode = self.designer_viewer.conjugate_mode
+        
+        self.designer_viewer.current_mode = Mode.ADD
+        self.designer_viewer.current_type = Type.ZERO
+        self.designer_viewer.conjugate_mode = True
+        
+        for zero in zeros:    
+            self.designer_viewer.add_element(zero)
+        self.designer_viewer.current_type = Type.POLE
+        for pole in poles:
             self.designer_viewer.add_element(pole)
 
         self.designer_viewer.current_type = current_type
         self.designer_viewer.current_mode = current_mode
         self.designer_viewer.conjugate_mode = current_conjugate_mode
-        print(self.designer_viewer.poles_list)
+        
+    def handle_zeros_and_poles_duplicates(self , zeros , poles):
+        zeros = sorted(zeros , key = lambda x: x[0])
+        for idx , zero in enumerate(zeros):
+            if (zeros[idx+1][0] == zeros[idx][0] and zeros[idx+1][1] == - zeros[idx][1]):
+                zeros.pop(idx+1)
+                idx = idx + 2
+        poles = sorted(poles , key = lambda x: x[0])
+        for idx , pole in enumerate(poles):
+            if (poles[idx+1][0] == poles[idx][0] and poles[idx+1][1] == - poles[idx][1]):
+                poles.pop(idx+1)
+                idx = idx + 2
+        return zeros , poles
         
     def toggle_play_pause_signal_viewers(self):
         self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
