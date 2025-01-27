@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout, QStackedWidget , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox, QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout, QStackedWidget , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox, QFileDialog, QMessageBox, QLineEdit
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -186,6 +186,15 @@ class MainWindow(QMainWindow):
         
         self.all_pass_filters_library = allPassFiltersLibrary()
         
+        self.custom_all_pass_combobox = self.findChild(QComboBox, "comboBox")
+        self.custom_all_pass_input = self.findChild(QLineEdit, "lineEdit")
+        
+        self.add_custom_all_pass_button = self.findChild(QPushButton, "pushButton_26")
+        self.add_custom_all_pass_button.clicked.connect(self.add_custom_all_pass_listener)
+        
+        self.apply_custom_all_pass_button = self.findChild(QPushButton, 'pushButton_28')
+        self.apply_custom_all_pass_button.clicked.connect(self.apply_custom_all_pass)
+        
         self.ap_filter1_button = self.findChild(QPushButton , "pushButton_21")
         self.ap_filter1_button.clicked.connect(self.apply_ap_filter_1)
     
@@ -200,6 +209,33 @@ class MainWindow(QMainWindow):
     
         self.ap_filter5_button = self.findChild(QPushButton , "pushButton_23")
         self.ap_filter5_button.clicked.connect(self.apply_ap_filter_5)
+        
+        self.ap_filter6_button = self.findChild(QPushButton , "pushButton_20")
+        self.ap_filter6_button.clicked.connect(self.apply_ap_filter_5)
+    
+        self.ap_filter7_button = self.findChild(QPushButton , "pushButton_24")
+        self.ap_filter7_button.clicked.connect(self.apply_ap_filter_5)
+    
+        self.ap_filter8_button = self.findChild(QPushButton , "pushButton_15")
+        self.ap_filter8_button.clicked.connect(self.apply_ap_filter_5)
+    
+        self.ap_filter9_button = self.findChild(QPushButton , "pushButton_25")
+        self.ap_filter9_button.clicked.connect(self.apply_ap_filter_5)
+    
+        self.ap_filter10_button = self.findChild(QPushButton , "pushButton_19")
+        self.ap_filter10_button.clicked.connect(self.apply_ap_filter_5)
+    
+    def add_custom_all_pass_listener(self):
+        coef = float(self.custom_all_pass_input.text())
+        self.all_pass_filters_library.make_custom_all_pass(coef)
+        self.custom_all_pass_combobox.clear()
+        for name in self.all_pass_filters_library.custom_filter_library.keys():
+            self.custom_all_pass_combobox.addItem(name)
+            
+    def apply_custom_all_pass(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.custom_filter_library[self.custom_all_pass_combobox.currentText()])
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
     
     def apply_ap_filter_1(self):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap1"))
@@ -225,6 +261,29 @@ class MainWindow(QMainWindow):
         self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap5"))
         self.controller.calculate_all_pass_filter_phase()
         self.controller.calculate_corrected_phase()
+        
+    def apply_ap_filter_10(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap10"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    def apply_ap_filter_6(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap6"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    def apply_ap_filter_7(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap7"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    def apply_ap_filter_8(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap8"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    def apply_ap_filter_9(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap9"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    # def apply_custom_all_pass(self):
+    #     self.controller
     
     def get_digital_filter1_components(self):
         zeros , poles = self.digital_filters_library.butterworth_lowpass()
@@ -379,7 +438,8 @@ class MainWindow(QMainWindow):
     def go_to_all_pass_filters_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'allpassFilters'))
         if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)           
+            self.Pages.setCurrentIndex(page_index)      
+            self.controller.calculate_all_pass_filter_phase()     
             self.controller.calculate_corrected_phase()
             
     def go_to_main_page_from_ap(self):
