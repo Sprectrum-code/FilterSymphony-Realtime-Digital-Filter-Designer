@@ -39,28 +39,28 @@ class DigitalFilters:
         z, p, _ = signal.cheby2(order, attenuation, cutoff, output='zpk')
         return [(z.real, z.imag) for z in z], [(p.real, p.imag) for p in p]
     
-    def inverse_chebyshev_lowpass(self, order=4, cutoff=0.5, attenuation=40):
-        """
-        Inverse Chebyshev lowpass filter
-        Args:
-            order: Filter order
-            cutoff: Normalized cutoff frequency
-            attenuation: Minimum attenuation in stopband (dB)
-        Returns:
-            tuple: (zeros, poles)
-        Note:
-            The inverse Chebyshev is similar to Chebyshev Type II but with
-            maximally flat response in the passband and equiripple in the stopband
-        """
-        # The inverse Chebyshev is implemented using Chebyshev Type II
-        # but with inversed specifications
-        z, p, _ = signal.cheby2(order, attenuation, 1.0/cutoff, output='zpk')
+    # def inverse_chebyshev_lowpass(self, order=4, cutoff=0.5, attenuation=40):
+    #     """
+    #     Inverse Chebyshev lowpass filter
+    #     Args:
+    #         order: Filter order
+    #         cutoff: Normalized cutoff frequency
+    #         attenuation: Minimum attenuation in stopband (dB)
+    #     Returns:
+    #         tuple: (zeros, poles)
+    #     Note:
+    #         The inverse Chebyshev is similar to Chebyshev Type II but with
+    #         maximally flat response in the passband and equiripple in the stopband
+    #     """
+    #     # The inverse Chebyshev is implemented using Chebyshev Type II
+    #     # but with inversed specifications
+    #     z, p, _ = signal.cheby2(order, attenuation, 1.0/cutoff, output='zpk')
         
-        # Normalize the frequencies
-        z = z / np.max(np.abs(z))
-        p = p / np.max(np.abs(p))
+    #     # Normalize the frequencies
+    #     z = z / np.max(np.abs(z))
+    #     p = p / np.max(np.abs(p))
         
-        return [(z.real, z.imag) for z in z], [(p.real, p.imag) for p in p]
+    #     return [(z.real, z.imag) for z in z], [(p.real, p.imag) for p in p]
     
     def elliptic_lowpass(self, order=4, cutoff=0.5, ripple=1, attenuation=40):
         """
@@ -89,10 +89,16 @@ class DigitalFilters:
         Notch filter to remove a specific frequency
         Args:
             Q: Quality factor
-            freq: Normalized frequency to remove
+            freq: Normalized frequency to remove (0 < freq < 1)
+        Returns:
+            tuple: (zeros, poles)
         """
-        z, p, _ = signal.iirnotch(freq, Q, output='zpk')
-        return [(z.real, z.imag) for z in z], [(p.real, p.imag) for p in p]
+            
+        b, a = signal.iirnotch(freq, Q)
+        
+        z, p, _ = signal.tf2zpk(b, a)
+        
+        return [(float(z.real), float(z.imag)) for z in z], [(float(p.real), float(p.imag)) for p in p]
     
     def bandpass_filter(self, order=4, lowcut=0.1, highcut=0.4):
         """
