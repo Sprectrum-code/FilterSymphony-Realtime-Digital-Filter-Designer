@@ -30,12 +30,19 @@ class DesignerViewer(pg.PlotItem):
         
         self.controller = controller
         
+        self.undo_stack = []
+        self.redo_stack = []
         #events
     def plot_unit_circle(self):
         theta = np.linspace(0, 2 * np.pi, 500)
         x = np.cos(theta)  
         y = np.sin(theta)  
         self.plot(x, y, pen=pg.mkPen('b', width=2), name="Unit Circle")
+        
+    def undo(self):
+        pass
+    def redo(self):
+        pass
         
     def add_element(self,coordinates:tuple, conjugate:bool = True):
         if self.current_type == Type.POLE:
