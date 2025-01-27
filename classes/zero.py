@@ -1,5 +1,7 @@
 import pyqtgraph as pg
 from enums.types import Type
+import copy
+
 class Zero(pg.PlotDataItem):
     def __init__(self, data, conjugate = None):
         super().__init__([data[0]], [data[1]], symbol ='o')
@@ -31,3 +33,13 @@ class Zero(pg.PlotDataItem):
     def imaginary(self, new_data):
         self.__imaginary = new_data
         self.setData([self.real], [new_data])
+        
+    def __deepcopy__(self, memo):
+        # Avoid deepcopying attributes that are not necessary or problematic
+        copied_zero = Zero((self.__real, self.__imaginary))
+        copied_zero.identity = self.identity
+        if self.conjugate:
+            copied_conjugate = copy.deepcopy(self.conjugate, memo)
+            copied_zero.conjugate = copied_conjugate
+            copied_conjugate.conjugate = copied_zero
+        return copied_zero

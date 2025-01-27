@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1754</width>
-    <height>1092</height>
+    <width>1714</width>
+    <height>1101</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -2637,13 +2637,9 @@ font-weight: bold;</string>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_42">
                    <item>
-                    <widget class="QLabel" name="label_34">
-                     <property name="styleSheet">
-                      <string notr="true">font-size: 16px;
-font-weight: bold;</string>
-                     </property>
+                    <widget class="QPushButton" name="pushButton_28">
                      <property name="text">
-                      <string>Apply It Know: </string>
+                      <string>Apply</string>
                      </property>
                     </widget>
                    </item>
