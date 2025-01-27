@@ -40,9 +40,21 @@ class DesignerViewer(pg.PlotItem):
         self.plot(x, y, pen=pg.mkPen('b', width=2), name="Unit Circle")
         
     def undo(self):
-        pass
+        print("inundo")
+        if len(self.undo_stack):
+            last_state = self.undo_stack.pop(-1)
+            self.redo_stack.append(last_state)
+            self.poles_list, self.zeros_list, self.dataItems = last_state
+            self.update()
+        
     def redo(self):
-        pass
+        print("inredo")
+        if len(self.redo_stack):
+            last_state = self.redo_stack.pop(-1)
+            self.undo_stack.append(last_state)
+            self.poles_list, self.zeros_list, self.dataItems = last_state
+            self.update()
+        
         
     def add_element(self,coordinates:tuple, conjugate:bool = True):
         if self.current_type == Type.POLE:
@@ -67,6 +79,8 @@ class DesignerViewer(pg.PlotItem):
                 self.addItem(conj_zero)
             zero_tuple = (new_zero, new_zero.conjugate)
             self.zeros_list.append(zero_tuple)
+        # self.undo_stack.append((deepcopy(self.poles_list),deepcopy(self.zeros_list), deepcopy(self.dataItems)))
+        # self.redo_stack.clear()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         
     def mouseDoubleClickEvent(self,event):
@@ -74,13 +88,6 @@ class DesignerViewer(pg.PlotItem):
         x, y = local_pos.x(), local_pos.y()
         if self.current_mode == Mode.ADD:
             self.add_element((x,y))
-        elif self.current_mode == Mode.DELETE:
-            pass
-        elif self.current_mode == Mode.REPLACE:
-            pass
-        elif self.current_mode == Mode.DRAG:
-            pass
-        
         print(f"Clicked at: x={x}, y={y}")
         
     def mousePressEvent(self, event):
@@ -113,6 +120,9 @@ class DesignerViewer(pg.PlotItem):
         elif event.isFinish(): # end of the dragging event 
             self.dragPoint = None
             self.dragIndex = -1
+            # self.undo_stack.append((self.poles_list, self.zeros_list, self.dataItems))
+            # self.redo_stack.clear()
+            print("app")
             return
         else: # this is the dragging itself
             if self.dragPoint is None: # we are not dragging a point 
@@ -129,7 +139,8 @@ class DesignerViewer(pg.PlotItem):
                     data_list[self.dragIndex].conjugate.imaginary = -local_pos.y()
                 self.controller.compute_new_filter(self.zeros_list, self.poles_list)
                 self.update()
-                
+                # print("appended")
+    
     def remove_item(self, item):
         self.removeItem(item)
         if item.conjugate is not None:
@@ -140,6 +151,8 @@ class DesignerViewer(pg.PlotItem):
             self.poles_list.remove((item, item.conjugate))
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         self.update()
+        # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
+        # self.redo_stack.clear()
                 
     def remove_all_zeros(self):
         for (item, conj_item) in self.zeros_list:
@@ -149,6 +162,8 @@ class DesignerViewer(pg.PlotItem):
                     self.removeItem(conj_item)
         self.zeros_list.clear()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
+        # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
+        # self.redo_stack.clear()
 
     def remove_all_poles(self):
         for (item, conj_item) in self.poles_list:
@@ -158,7 +173,8 @@ class DesignerViewer(pg.PlotItem):
                     self.removeItem(conj_item)
         self.poles_list.clear()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
-        
+        # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
+        # self.redo_stack.clear()
     def remove_all(self):
         self.remove_all_zeros()
         self.remove_all_poles()
@@ -191,6 +207,8 @@ class DesignerViewer(pg.PlotItem):
                     self.addItem(new_pole_conj)
                 self.poles_list.append((new_pole, new_pole_conj))
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
+        # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
+        # self.redo_stack.clear()
 
 
 

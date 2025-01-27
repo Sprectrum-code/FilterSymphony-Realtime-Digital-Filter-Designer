@@ -13,6 +13,7 @@ import numpy as np
 import pyqtgraph as pg
 from enums.modesEnum import Mode
 from enums.types import Type
+from classes.Viewer import Viewer
 
 compile_qrc()
 from icons_setup.compiledIcons import *
@@ -89,6 +90,13 @@ class MainWindow(QMainWindow):
         self.signal_viewers_speed_slider.setValue(50)
         self.signal_viewers_speed_slider.sliderMoved.connect(self.modify_signal_viewers_speed)
         
+        
+        # undo_redo
+        self.undo_button = self.findChild(QPushButton, "undo")
+        self.undo_button.clicked.connect(self.designer_viewer.undo)
+        self.redo_button = self.findChild(QPushButton, "redo")
+        self.redo_button.clicked.connect(self.designer_viewer.redo)
+        
         # controls initialization
         # self.add_zero_button = self.findChild(QPushButton, "addZero")
         # self.add_zero_button.clicked.connect(self.add_zero)
@@ -98,6 +106,18 @@ class MainWindow(QMainWindow):
         # Initialize filter 1 button
         self.digital_filter_1_button = self.findChild(QPushButton , "pushButton_2")
         self.digital_filter_1_button.clicked.connect(self.apply_filter_1)
+        
+        self.magnitude_viewer = Viewer()
+        self.magnitude_signal_frame = self.findChild(QFrame, 'amplitudeFrame')
+        self.magnitude_signal_frame_layout = QVBoxLayout()
+        self.magnitude_signal_frame.setLayout(self.magnitude_signal_frame_layout)
+        self.magnitude_signal_frame_layout.addWidget(self.magnitude_viewer)
+        
+        self.phase_viewer = Viewer()
+        self.phase_signal_frame = self.findChild(QFrame, 'frequencyFrame')
+        self.phase_signal_frame_layout = QVBoxLayout()
+        self.phase_signal_frame.setLayout(self.phase_signal_frame_layout)
+        self.phase_signal_frame_layout.addWidget(self.phase_viewer)
     
     def apply_filter_1(self):
         zeros , poles = self.digital_filters_library.butterworth_lowpass()
