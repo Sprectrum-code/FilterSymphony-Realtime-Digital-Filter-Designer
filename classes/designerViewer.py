@@ -31,7 +31,7 @@ class DesignerViewer(pg.PlotItem):
         
         self.controller = controller
         
-        self.undo_stack = []
+        self.undo_stack = [([],[])]
         self.redo_stack = []
         #events
     def plot_unit_circle(self):
@@ -40,21 +40,81 @@ class DesignerViewer(pg.PlotItem):
         y = np.sin(theta)  
         self.plot(x, y, pen=pg.mkPen('b', width=2), name="Unit Circle")
         
+    def push_in_undo_stack(self):
+        print("pushed")
+        new_zeros_list = []
+        new_poles_list = []
+        for (zero, conj) in self.zeros_list:
+            new_zero = Zero((zero.real, zero.imaginary))
+            if conj:
+                new_conj = Zero((conj.real, conj.imaginary))
+                new_conj.conjugate = new_zero
+                new_zero.conjugate = new_conj
+            new_zeros_list.append((new_zero, new_zero.conjugate))
+        for (pole, conj) in self.poles_list:
+            new_pole = Pole((pole.real, pole.imaginary))
+            if conj:
+                new_conj = Pole((conj.real, conj.imaginary))
+                new_conj.conjugate = new_pole
+                new_pole.conjugate = new_conj
+            new_poles_list.append((new_pole, new_pole.conjugate))
+        self.undo_stack.append((new_poles_list, new_zeros_list))
+        
+        
+        
     def undo(self):
-        print("inundo")
-        if len(self.undo_stack):
-            last_state = self.undo_stack.pop(-1)
-            self.redo_stack.append(last_state)
-            self.poles_list, self.zeros_list, self.dataItems = last_state
+        circle = self.dataItems[0]
+        if len(self.undo_stack) <= 1:
+            self.clear()
+            self.addItem(circle)
+            # self.zeros_list.clear()
+            # self.poles_list.clear()
+        
+        else:
+            redoed_state = self.undo_stack.pop(-1)
+            print("inundo")
+            last_state = self.undo_stack[-1]
+            # self.redo_stack.append(last_state)
+            another_poles_list, another_zeros_list = [x for x in last_state[0]], [x for x in last_state[1]]
+            self.poles_list, self.zeros_list = another_poles_list, another_zeros_list
+            another_poles_list_redoed, another_zeros_list_redoed = [x for x in redoed_state[0]], [x for x in redoed_state[1]]
+            # self.poles_list, self.zeros_list = another_poles_list, another_zeros_list
+            
+            
+            self.redo_stack.append((another_poles_list_redoed, another_zeros_list_redoed))
+            # self.redo_stack.append((another_poles_list, another_zeros_list))
+            self.clear()
+            self.addItem(circle)
+            for (pole,conj_pole) in self.poles_list:
+                self.addItem(pole)
+                if conj_pole:
+                    self.addItem(conj_pole)
+            for (zero,conj_zero) in self.zeros_list:
+                self.addItem(zero)
+                if conj_zero:
+                    self.addItem(conj_zero)
             self.update()
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         
     def redo(self):
-        print("inredo")
         if len(self.redo_stack):
+            circle = self.dataItems[0]
             last_state = self.redo_stack.pop(-1)
-            self.undo_stack.append(last_state)
-            self.poles_list, self.zeros_list, self.dataItems = last_state
+            another_poles_list, another_zeros_list = [x for x in last_state[0]], [x for x in last_state[1]]
+            self.poles_list, self.zeros_list = another_poles_list, another_zeros_list
+            self.clear()
+            self.addItem(circle)
+            for (pole,conj_pole) in self.poles_list:
+                self.addItem(pole)
+                if conj_pole:
+                    self.addItem(conj_pole)
+            for (zero,conj_zero) in self.zeros_list:
+                self.addItem(zero)
+                if conj_zero:
+                    self.addItem(conj_zero)
             self.update()
+            self.push_in_undo_stack()
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         
         
     def add_element(self,coordinates:tuple, conjugate:bool = True):
@@ -81,7 +141,8 @@ class DesignerViewer(pg.PlotItem):
             zero_tuple = (new_zero, new_zero.conjugate)
             self.zeros_list.append(zero_tuple)
         # self.undo_stack.append((deepcopy(self.poles_list),deepcopy(self.zeros_list), deepcopy(self.dataItems)))
-        # self.redo_stack.clear()
+        self.redo_stack.clear()
+        self.push_in_undo_stack()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         
     def mouseDoubleClickEvent(self,event):
@@ -89,6 +150,7 @@ class DesignerViewer(pg.PlotItem):
         x, y = local_pos.x(), local_pos.y()
         if self.current_mode == Mode.ADD:
             self.add_element((x,y))
+            # self.push_in_undo_stack()
         print(f"Clicked at: x={x}, y={y}")
         
     def mousePressEvent(self, event):
@@ -122,7 +184,8 @@ class DesignerViewer(pg.PlotItem):
             self.dragPoint = None
             self.dragIndex = -1
             # self.undo_stack.append((self.poles_list, self.zeros_list, self.dataItems))
-            # self.redo_stack.clear()
+            self.redo_stack.clear()
+            self.push_in_undo_stack()
             print("app")
             return
         else: # this is the dragging itself
@@ -152,8 +215,10 @@ class DesignerViewer(pg.PlotItem):
             self.poles_list.remove((item, item.conjugate))
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         self.update()
+        self.redo_stack.clear()
+        self.push_in_undo_stack()
+        
         # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
-        # self.redo_stack.clear()
                 
     def remove_all_zeros(self):
         for (item, conj_item) in self.zeros_list:
@@ -164,7 +229,8 @@ class DesignerViewer(pg.PlotItem):
         self.zeros_list.clear()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
-        # self.redo_stack.clear()
+        self.push_in_undo_stack()
+        self.redo_stack.clear()
 
     def remove_all_poles(self):
         for (item, conj_item) in self.poles_list:
@@ -175,7 +241,8 @@ class DesignerViewer(pg.PlotItem):
         self.poles_list.clear()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
-        # self.redo_stack.clear()
+        self.push_in_undo_stack()
+        self.redo_stack.clear()
     def remove_all(self):
         self.remove_all_zeros()
         self.remove_all_poles()
@@ -209,7 +276,8 @@ class DesignerViewer(pg.PlotItem):
                 self.poles_list.append((new_pole, new_pole_conj))
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
-        # self.redo_stack.clear()
+        self.redo_stack.clear()
+        self.push_in_undo_stack()
         
     def export_current_filter(self):
         real_zeros_list, imaginary_zeros_list, real_poles_list, imaginary_poles_list, zero_conj_list, pole_conj_list = [],[],[],[],[],[]
@@ -274,7 +342,8 @@ class DesignerViewer(pg.PlotItem):
                 self.poles_list.append(data_element)
         self.update()
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
-
+        self.redo_stack.clear()
+        self.push_in_undo_stack()
 
 
         
