@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStackedWidget , QVBoxLayout , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -9,6 +9,7 @@ from classes.controller import Controller
 from classes.customSignal import CustomSignal
 from classes.designerViewer import DesignerViewer 
 from classes.digitalFiltersLibrary import DigitalFilters
+from classes.allPassFiltersLibrary import allPassFiltersLibrary
 import numpy as np
 import pyqtgraph as pg
 from enums.modesEnum import Mode
@@ -25,9 +26,36 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('Realtime Digital Filter Designer')
         self.setWindowIcon(QIcon('icons_setup\icons\logo.png'))
         
+        # Initialize Program pages
+        self.Pages = self.findChild(QStackedWidget, 'pages') 
+        # self.AllPassFilterPage = self.Pages.indexOf(self.findChild(QWidget , 'allpassFilters')) 
+        
+        # Initialize traverse_pages_buttons
+        self.to_all_pass_filter_page_button = self.findChild(QPushButton , "filters")
+        self.to_all_pass_filter_page_button.clicked.connect(self.go_to_all_pass_filters_page)
+        
+        self.to_main_page_from_ap_button = self.findChild(QPushButton , "backHome3")
+        self.to_main_page_from_ap_button.clicked.connect(self.go_to_main_page_from_ap)
+        
         # Initializing the signal viewer
         self.pre_signal_viewer = SignalViewer()
         self.post_signal_viewer = SignalViewer()
+        
+        # Initialize all pass page viewers
+        self.ap_filter_phase_viewer = Viewer()
+        self.ap_corrected_phase_viewer = Viewer()
+        
+        # Initialize all pass page viewer frames
+        self.ap_filter_phase_viewer_frame = self.findChild(QFrame , "frame_11")
+        self.ap_filter_phase_viewer_layout = QVBoxLayout()
+        self.ap_filter_phase_viewer_frame.setLayout(self.ap_filter_phase_viewer_layout)
+        self.ap_filter_phase_viewer_layout.addWidget(self.ap_filter_phase_viewer)
+        
+        # Initialize all pass page viewer frames
+        self.ap_corrected_phase_viewer_frame = self.findChild(QFrame , "frame_12")
+        self.ap_corrected_phase_viewer_layout = QVBoxLayout()
+        self.ap_corrected_phase_viewer_frame.setLayout(self.ap_corrected_phase_viewer_layout)
+        self.ap_corrected_phase_viewer_layout.addWidget(self.ap_corrected_phase_viewer)
         
         # Initializing the pre-signal frame
         self.pre_signal_frame = self.findChild(QFrame, 'presignalFrame')
@@ -47,7 +75,7 @@ class MainWindow(QMainWindow):
         self.current_signal = CustomSignal(x , y)
         
         # Initialize the controller
-        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal)
+        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal , self.ap_filter_phase_viewer , self.ap_corrected_phase_viewer)
         
         # initialize the filter designer viewer
         self.designer_viewer = DesignerViewer(self.controller)
@@ -149,7 +177,48 @@ class MainWindow(QMainWindow):
 
         self.digital_filter_10_button = self.findChild(QPushButton , "pushButton_10")
         self.digital_filter_10_button.clicked.connect(self.get_digital_filter10_components)
-
+        
+        self.all_pass_filters_library = allPassFiltersLibrary()
+        
+        self.ap_filter1_button = self.findChild(QPushButton , "pushButton_21")
+        self.ap_filter1_button.clicked.connect(self.apply_ap_filter_1)
+    
+        self.ap_filter2_button = self.findChild(QPushButton , "pushButton_16")
+        self.ap_filter2_button.clicked.connect(self.apply_ap_filter_2)
+    
+        self.ap_filter3_button = self.findChild(QPushButton , "pushButton_22")
+        self.ap_filter3_button.clicked.connect(self.apply_ap_filter_3)
+    
+        self.ap_filter4_button = self.findChild(QPushButton , "pushButton_17")
+        self.ap_filter4_button.clicked.connect(self.apply_ap_filter_4)
+    
+        self.ap_filter5_button = self.findChild(QPushButton , "pushButton_23")
+        self.ap_filter5_button.clicked.connect(self.apply_ap_filter_5)
+    
+    def apply_ap_filter_1(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap1"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    
+    def apply_ap_filter_2(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap2"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    
+    def apply_ap_filter_3(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap3"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    
+    def apply_ap_filter_4(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap4"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
+    
+    def apply_ap_filter_5(self):
+        self.controller.handle_all_pass_zero_pole_list(self.all_pass_filters_library.get_filter("ap5"))
+        self.controller.calculate_all_pass_filter_phase()
+        self.controller.calculate_corrected_phase()
     
     def get_digital_filter1_components(self):
         zeros , poles = self.digital_filters_library.butterworth_lowpass()
@@ -208,9 +277,7 @@ class MainWindow(QMainWindow):
     def get_digital_filter10_components(self):
         zeros , poles = self.digital_filters_library.gaussian_filter()
         self.apply_digital_filter(zeros , poles)
-    
-    
-    
+        
     def apply_digital_filter(self, zeros ,poles):
         zeros , poles = self.handle_zeros_and_poles_duplicates(zeros , poles)
         current_mode = self.designer_viewer.current_mode
@@ -286,8 +353,29 @@ class MainWindow(QMainWindow):
         else:
             self.designer_viewer.conjugate_mode = False
             
+    def go_to_all_pass_filters_page(self):
+        page_index = self.Pages.indexOf(self.findChild(QWidget, 'allpassFilters'))
+        if page_index != -1:
+            self.Pages.setCurrentIndex(page_index)           
+            self.controller.calculate_corrected_phase()
             
-        
+    def go_to_main_page_from_ap(self):
+        page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
+        if page_index != -1:
+            self.Pages.setCurrentIndex(page_index)     
+        # self.designer_viewer.zeros_list.extend(self.controller.original_all_pass_zeros_poles_list[1])
+        current_type = self.designer_viewer.current_type
+        self.designer_viewer.current_type = Type.POLE
+        self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[0][0][0].real,self.controller.original_all_pass_zeros_poles_list[0][0][0].imaginary))
+        self.designer_viewer.current_type = Type.ZERO
+        self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[1][0][0].real , self.controller.original_all_pass_zeros_poles_list[1][0][0].imaginary))
+        self.designer_viewer.current_type = current_type
+        self.controller.compute_new_filter(self.designer_viewer.zeros_list,self.designer_viewer.poles_list)
+        self.controller.compute_magnitude_and_phase()
+        self.controller.all_pass_zeros_poles_list[0].clear()
+        self.controller.all_pass_zeros_poles_list[1].clear()
+        self.controller.original_all_pass_zeros_poles_list[0].clear()
+        self.controller.original_all_pass_zeros_poles_list[1].clear()
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)

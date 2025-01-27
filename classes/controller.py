@@ -1,8 +1,10 @@
 from PyQt5.QtGui import QIcon
 import numpy as np
 from scipy.signal import lfilter , zpk2tf 
+from classes.pole import Pole
+from classes.zero import Zero
 class Controller():
-    def __init__(self, pre_signal_viewer , post_signal_viewer , current_signal):
+    def __init__(self, pre_signal_viewer , post_signal_viewer , current_signal , ap_filter_phase_viewer , ap_corrected_phase_viewer):
         self.pre_signal_viewer = pre_signal_viewer
         self.post_signal_viewer = post_signal_viewer
         self.is_signal_viewers_playing = True
@@ -19,6 +21,10 @@ class Controller():
         self.magnitude_viewer = None
         self.phase_viewer = None
         self.designer_viewer = None
+        self.ap_corrected_phase_viewer = ap_corrected_phase_viewer
+        self.ap_filter_phase_viewer = ap_filter_phase_viewer
+        self.all_pass_zeros_poles_list = [[],[]]
+        self.original_all_pass_zeros_poles_list = [[],[]]
     
     def set_current_signal(self):
         self.pre_signal_viewer.current_signal = self.current_signal
@@ -40,8 +46,30 @@ class Controller():
     def compute_magnitude_and_phase(self):
         self.magnitude_viewer.compute_magnitude(self.designer_viewer.poles_list, self.designer_viewer.zeros_list)
         self.phase_viewer.compute_phase(self.designer_viewer.poles_list, self.designer_viewer.zeros_list)
-        
     
+    def calculate_all_pass_filter_phase(self):
+        self.ap_filter_phase_viewer.compute_phase(self.all_pass_zeros_poles_list[0] , self.all_pass_zeros_poles_list[1])    
+    
+    def calculate_corrected_phase(self):
+        self.all_pass_zeros_poles_list[0].extend(self.designer_viewer.poles_list)
+        self.all_pass_zeros_poles_list[1].extend(self.designer_viewer.zeros_list)
+        self.ap_corrected_phase_viewer.compute_phase(self.all_pass_zeros_poles_list[0] , self.all_pass_zeros_poles_list[1])
+        
+        
+    def handle_all_pass_zero_pole_list(self , poles_zeros):
+        self.all_pass_zeros_poles_list[0].clear()
+        self.all_pass_zeros_poles_list[1].clear()
+        self.original_all_pass_zeros_poles_list[0].clear()
+        self.original_all_pass_zeros_poles_list[1].clear()
+        pole = poles_zeros[0]
+        zero = poles_zeros[1]
+        pole = Pole(pole)
+        zero = Zero(zero)
+        self.all_pass_zeros_poles_list[0].append((pole,None))
+        self.all_pass_zeros_poles_list[1].append((zero,None))
+        self.original_all_pass_zeros_poles_list[0].append((pole,None))
+        self.original_all_pass_zeros_poles_list[1].append((zero,None))
+        
     def replay_signal_viewers(self):
         self.pre_signal_viewer.current_signal_plotting_index = 0
         self.post_signal_viewer.current_signal_plotting_index = 0
