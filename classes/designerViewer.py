@@ -120,6 +120,7 @@ class DesignerViewer(pg.PlotItem):
                 if data_list[self.dragIndex].conjugate:
                     data_list[self.dragIndex].conjugate.real = local_pos.x()
                     data_list[self.dragIndex].conjugate.imaginary = -local_pos.y()
+                self.controller.compute_new_filter(self.zeros_list, self.poles_list)
                 self.update()
                 
     def remove_item(self, item):
@@ -130,6 +131,7 @@ class DesignerViewer(pg.PlotItem):
             self.zeros_list.remove((item, item.conjugate))
         else:
             self.poles_list.remove((item, item.conjugate))
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         self.update()
                 
     def remove_all_zeros(self):
@@ -139,7 +141,8 @@ class DesignerViewer(pg.PlotItem):
                 if conj_item:
                     self.removeItem(conj_item)
         self.zeros_list.clear()
-        
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
+
     def remove_all_poles(self):
         for (item, conj_item) in self.poles_list:
             if isinstance(item,Pole):
@@ -147,7 +150,8 @@ class DesignerViewer(pg.PlotItem):
                 if conj_item:
                     self.removeItem(conj_item)
         self.poles_list.clear()
-                
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
+        
     def remove_all(self):
         self.remove_all_zeros()
         self.remove_all_poles()
@@ -179,7 +183,8 @@ class DesignerViewer(pg.PlotItem):
                     self.removeItem(conj_item)
                     self.addItem(new_pole_conj)
                 self.poles_list.append((new_pole, new_pole_conj))
-        
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
+
 
 
         
