@@ -7,6 +7,7 @@ from classes.zero import Zero
 from enums.types import Type
 from enums.modesEnum import Mode
 from copy import deepcopy
+import pandas as pd
 class DesignerViewer(pg.PlotItem):
     def __init__(self , controller):
         super().__init__()
@@ -209,6 +210,70 @@ class DesignerViewer(pg.PlotItem):
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         # self.undo_stack.append((deepcopy(self.poles_list), deepcopy(self.zeros_list), deepcopy(self.dataItems)))
         # self.redo_stack.clear()
+        
+    def export_current_filter(self):
+        real_zeros_list, imaginary_zeros_list, real_poles_list, imaginary_poles_list, zero_conj_list, pole_conj_list = [],[],[],[],[],[]
+        for (zero, conj_zero) in self.zeros_list:
+            real_zeros_list.append(zero.real)
+            imaginary_zeros_list.append(zero.imaginary)
+            if conj_zero:
+                zero_conj_list.append('True')
+            else:
+                zero_conj_list.append('False')
+        for (pole, conj_pole) in self.poles_list:
+            real_poles_list.append(pole.real)
+            imaginary_poles_list.append(pole.imaginary)
+            if conj_pole:
+                pole_conj_list.append('True')
+            else:
+                pole_conj_list.append('False')
+        diff = abs(len(real_zeros_list) - len(real_poles_list))
+        if diff > 0:
+            if len(real_zeros_list) > len(real_poles_list):
+                for _ in range(diff):
+                    real_poles_list.append(None)
+                    imaginary_poles_list.append(None)
+                    pole_conj_list.append(None)
+            else:
+                for _ in range(diff):
+                    real_zeros_list.append(None)
+                    imaginary_zeros_list.append(None)
+                    zero_conj_list.append(None)
+        filter_data = { 'zero_real':real_zeros_list,
+                        'zero_imaginary':imaginary_zeros_list,
+                        'zero_has_conj':zero_conj_list,
+                        'pole_real':real_poles_list,
+                        'pole_imaginary':imaginary_poles_list,
+                        'pole_has_conj':pole_conj_list}
+        df = pd.DataFrame(filter_data)
+        df.to_csv("exported_filter.csv", index=False)
+        
+    def import_filter(self, file_path):
+        filter_df = pd.read_csv(file_path)
+        for _, row in filter_df.iterrows():
+            if pd.notnull(row['zero_real']) and pd.notnull(row['zero_imaginary']):
+                zero = Zero((row['zero_real'], row['zero_imaginary']))
+                self.addItem(zero)
+                if row['zero_has_conj'] == True: 
+                    print("iam conj")
+                    conj_zero = Zero((row['zero_real'], -row['zero_imaginary']))
+                    zero.conjugate = conj_zero
+                    conj_zero.conjugate = zero
+                    self.addItem(conj_zero)
+                data_element = (zero, zero.conjugate)
+                self.zeros_list.append(data_element)
+            if pd.notnull(row['pole_real']) and pd.notnull(row['pole_imaginary']):
+                pole = Pole((row['pole_real'], row['pole_imaginary']))
+                self.addItem(pole)
+                if row['pole_has_conj'] == True: 
+                    conj_pole = Pole((row['pole_real'], -row['pole_imaginary']))
+                    pole.conjugate = conj_pole
+                    conj_pole.conjugate = pole
+                    self.addItem(conj_pole)
+                data_element = (pole, pole.conjugate)
+                self.poles_list.append(data_element)
+        self.update()
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
 
 
 

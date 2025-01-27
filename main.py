@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget , QVBoxLayout , QHBoxLayout , QFrame ,QSlider, QPushButton, QComboBox, QCheckBox, QFileDialog, QMessageBox
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import Qt
@@ -125,6 +125,12 @@ class MainWindow(QMainWindow):
         self.controller.magnitude_viewer = self.magnitude_viewer
         self.controller.phase_viewer = self.phase_viewer
         self.controller.designer_viewer = self.designer_viewer
+        
+        self.export_button = self.findChild(QPushButton, 'save')
+        self.export_button.clicked.connect(self.designer_viewer.export_current_filter)
+        
+        self.browse_filter_button = self.findChild(QPushButton, "browse")
+        self.browse_filter_button.clicked.connect(self.browse_filter)
     
         self.digital_filter_3_button = self.findChild(QPushButton , "pushButton")
         self.digital_filter_3_button.clicked.connect(self.get_digital_filter3_components)
@@ -285,6 +291,23 @@ class MainWindow(QMainWindow):
             self.designer_viewer.conjugate_mode = True
         else:
             self.designer_viewer.conjugate_mode = False
+    
+    def browse_filter(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, 
+            "Open CSV File", 
+            "", 
+            "CSV Files (*.csv);;All Files (*)", 
+            options=options
+        )
+
+        if file_path:
+            self.designer_viewer.import_filter(file_path)
+        else:
+            QMessageBox.warning(self, "No File Selected", "Please select a valid CSV file.")
+
             
             
         
