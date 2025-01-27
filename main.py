@@ -10,6 +10,7 @@ from classes.customSignal import CustomSignal
 from classes.designerViewer import DesignerViewer 
 from classes.digitalFiltersLibrary import DigitalFilters
 from classes.allPassFiltersLibrary import allPassFiltersLibrary
+from classes.filterCodeGenerator import FilterCodeGenerator
 import numpy as np
 import pyqtgraph as pg
 from enums.modesEnum import Mode
@@ -44,7 +45,12 @@ class MainWindow(QMainWindow):
         # Initialize all pass page viewers
         self.ap_filter_phase_viewer = Viewer()
         self.ap_corrected_phase_viewer = Viewer()
+
+        self.generator = FilterCodeGenerator()
         
+        self.cCodeGenerator = self.findChild(QPushButton, "cCodeGenerator")
+        self.cCodeGenerator.clicked.connect(self.download_c_code)
+
         # Initialize all pass page viewer frames
         self.ap_filter_phase_viewer_frame = self.findChild(QFrame , "frame_11")
         self.ap_filter_phase_viewer_layout = QVBoxLayout()
@@ -70,7 +76,7 @@ class MainWindow(QMainWindow):
         self.post_signal_frame_layout.addWidget(self.post_signal_viewer)
         
         # Initialize the signal
-        x = np.linspace(0, 10 * np.pi, 1000)
+        x = np.linspace(0, 10 * np.pi, 10000)
         y = np.sin(2*np.pi*x)
         self.current_signal = CustomSignal(x , y)
         
@@ -104,13 +110,13 @@ class MainWindow(QMainWindow):
         
         # initialize the removing combobox 
         self.removal_combobox = self.findChild(QComboBox,"removeComboBox")
-        self.removal_combobox.currentIndexChanged.connect(self.remove_listener)
+        # self.removal_combobox.currentIndexChanged.connect(self.remove_listener)
         
         self.removal_button = self.findChild(QPushButton, "pushButton_18")
         self.removal_button.clicked.connect(self.remove_listener)
         
         self.swap_combobox = self.findChild(QComboBox, "swapComboBox")
-        self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
+        # self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
         
         self.swap_button = self.findChild(QPushButton, "pushButton_27")
         self.swap_button.clicked.connect(self.swap_listener)
@@ -457,18 +463,25 @@ class MainWindow(QMainWindow):
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)     
         # self.designer_viewer.zeros_list.extend(self.controller.original_all_pass_zeros_poles_list[1])
+        current_mode = self.designer_viewer.conjugate_mode
         current_type = self.designer_viewer.current_type
+        self.designer_viewer.current_mode = False
         self.designer_viewer.current_type = Type.POLE
         self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[0][0][0].real,self.controller.original_all_pass_zeros_poles_list[0][0][0].imaginary))
         self.designer_viewer.current_type = Type.ZERO
         self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[1][0][0].real , self.controller.original_all_pass_zeros_poles_list[1][0][0].imaginary))
         self.designer_viewer.current_type = current_type
+        self.designer_viewer.conjugate_mode = current_mode
         self.controller.compute_new_filter(self.designer_viewer.zeros_list,self.designer_viewer.poles_list)
         self.controller.compute_magnitude_and_phase()
         self.controller.all_pass_zeros_poles_list[0].clear()
         self.controller.all_pass_zeros_poles_list[1].clear()
         self.controller.original_all_pass_zeros_poles_list[0].clear()
         self.controller.original_all_pass_zeros_poles_list[1].clear()
+    
+    def download_c_code(self):
+        self.generator.save_to_file(self.designer_viewer.poles_list, self.designer_viewer.zeros_list, "Filter.c")
+        
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
