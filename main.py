@@ -10,6 +10,7 @@ from classes.customSignal import CustomSignal
 from classes.designerViewer import DesignerViewer 
 from classes.digitalFiltersLibrary import DigitalFilters
 from classes.allPassFiltersLibrary import allPassFiltersLibrary
+from classes.filterCodeGenerator import FilterCodeGenerator
 import numpy as np
 import pyqtgraph as pg
 from enums.modesEnum import Mode
@@ -44,7 +45,12 @@ class MainWindow(QMainWindow):
         # Initialize all pass page viewers
         self.ap_filter_phase_viewer = Viewer()
         self.ap_corrected_phase_viewer = Viewer()
+
+        self.generator = FilterCodeGenerator()
         
+        self.cCodeGenerator = self.findChild(QPushButton, "cCodeGenerator")
+        self.cCodeGenerator.clicked.connect(self.download_c_code)
+
         # Initialize all pass page viewer frames
         self.ap_filter_phase_viewer_frame = self.findChild(QFrame , "frame_11")
         self.ap_filter_phase_viewer_layout = QVBoxLayout()
@@ -469,6 +475,10 @@ class MainWindow(QMainWindow):
         self.controller.all_pass_zeros_poles_list[1].clear()
         self.controller.original_all_pass_zeros_poles_list[0].clear()
         self.controller.original_all_pass_zeros_poles_list[1].clear()
+    
+    def download_c_code(self):
+        self.generator.save_to_file(self.designer_viewer.poles_list, self.designer_viewer.zeros_list, "Filter.c")
+        
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
