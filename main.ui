@@ -117,7 +117,7 @@ QSlider::add-page:horizontal {
     <item row="0" column="0">
      <widget class="QStackedWidget" name="pages">
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="homePage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -2701,16 +2701,6 @@ QComboBox QAbstractItemView {
 }
 </string>
                      </property>
-                     <item>
-                      <property name="text">
-                       <string>Custom Filter 01</string>
-                      </property>
-                     </item>
-                     <item>
-                      <property name="text">
-                       <string>Custom Filter 02</string>
-                      </property>
-                     </item>
                     </widget>
                    </item>
                   </layout>
