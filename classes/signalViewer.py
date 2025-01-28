@@ -50,14 +50,14 @@ class SignalViewer(Viewer):
         '''
         if self.current_signal_plotting_index < len(self.current_signal[0]):
             self.curve.setData(self.current_signal[0][:self.current_signal_plotting_index], self.current_signal[1][:self.current_signal_plotting_index])
-            if(self.current_signal_plotting_index <= 50):
+            if(self.current_signal_plotting_index <= 400):
                 self.setXRange(0, self.current_signal[0][self.current_signal_plotting_index])
             
             elif(self.current_signal_plotting_index + 50 >= len(self.current_signal[0])):
-                self.setXRange(self.current_signal[0][self.current_signal_plotting_index - 50], self.current_signal[0][self.current_signal_plotting_index])
+                self.setXRange(self.current_signal[0][self.current_signal_plotting_index - 400], self.current_signal[0][self.current_signal_plotting_index])
             
             else:
-                self.setXRange(self.current_signal[0][self.current_signal_plotting_index - 50], self.current_signal[0][self.current_signal_plotting_index + 50])
+                self.setXRange(self.current_signal[0][self.current_signal_plotting_index - 400], self.current_signal[0][self.current_signal_plotting_index + 50])
             self.current_signal_plotting_index += 1
         else:
             self.timer.stop()
