@@ -45,6 +45,7 @@ class Controller():
         self.current_signal = CustomSignal(time_list , signal_list).signal
         self.signal_page_pre_viewer.play_timer()
         self.signal_page_post_viewer.play_timer()
+        self.replay_signal_viewers()
         self.compute_new_filter(self.designer_viewer.zeros_list , self.designer_viewer.poles_list)
         
     def toggle_play_pause_signal_viewers(self , play_pause_button):
