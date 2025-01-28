@@ -3,8 +3,10 @@ import numpy as np
 from scipy.signal import lfilter , zpk2tf 
 from classes.pole import Pole
 from classes.zero import Zero
+from classes.customSignal import CustomSignal
+import pandas as pd
 class Controller():
-    def __init__(self, pre_signal_viewer , post_signal_viewer , current_signal , ap_filter_phase_viewer , ap_corrected_phase_viewer):
+    def __init__(self, pre_signal_viewer , post_signal_viewer , current_signal , ap_filter_phase_viewer , ap_corrected_phase_viewer , signal_page_pre_viewer ,signal_page_post_viewer):
         self.pre_signal_viewer = pre_signal_viewer
         self.post_signal_viewer = post_signal_viewer
         self.is_signal_viewers_playing = True
@@ -25,11 +27,25 @@ class Controller():
         self.ap_filter_phase_viewer = ap_filter_phase_viewer
         self.all_pass_zeros_poles_list = [[],[]]
         self.original_all_pass_zeros_poles_list = [[],[]]
-    
+        self.ap_filter_added = False
+        self.signal_page_pre_viewer = signal_page_pre_viewer
+        self.signal_page_post_viewer = signal_page_post_viewer
+        
     def set_current_signal(self):
         self.pre_signal_viewer.current_signal = self.current_signal
+        self.signal_page_pre_viewer.current_signal = self.current_signal
         self.post_signal_viewer.current_signal = self.filtered_signal
+        self.signal_page_post_viewer.current_signal = self.filtered_signal
         self.compute_magnitude_and_phase()
+    
+    def browse_signal(self , file_path):
+        read_data = pd.read_csv(file_path)
+        time_list = read_data['Time'].tolist()
+        signal_list = read_data['Signal'].tolist()
+        self.current_signal = CustomSignal(time_list , signal_list).signal
+        self.signal_page_pre_viewer.play_timer()
+        self.signal_page_post_viewer.play_timer()
+        self.compute_new_filter(self.designer_viewer.zeros_list , self.designer_viewer.poles_list)
         
     def toggle_play_pause_signal_viewers(self , play_pause_button):
         if(self.is_signal_viewers_playing):
@@ -57,6 +73,7 @@ class Controller():
         
         
     def handle_all_pass_zero_pole_list(self , poles_zeros):
+        self.ap_filter_added = True
         self.all_pass_zeros_poles_list[0].clear()
         self.all_pass_zeros_poles_list[1].clear()
         self.original_all_pass_zeros_poles_list[0].clear()
@@ -77,6 +94,10 @@ class Controller():
     def modify_signal_viewers_speed(self , new_speed):
         self.pre_signal_viewer.change_viewer_speed(new_speed)
         self.post_signal_viewer.change_viewer_speed(new_speed)
+    
+    def modify_signal_page_viewers_speed(self , new_speed):
+        self.signal_page_pre_viewer.change_viewer_speed(new_speed)
+        self.signal_page_post_viewer.change_viewer_speed(new_speed)
     
     def compute_new_filter(self, zeros , poles):
         # print(zeros[0][0].real)

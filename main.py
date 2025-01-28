@@ -38,6 +38,12 @@ class MainWindow(QMainWindow):
         self.to_main_page_from_ap_button = self.findChild(QPushButton , "backHome3")
         self.to_main_page_from_ap_button.clicked.connect(self.go_to_main_page_from_ap)
         
+        self.to_signal_drawing_page_button = self.findChild(QPushButton , "signalDrawing")
+        self.to_signal_drawing_page_button.clicked.connect(self.go_to_signal_page)
+        
+        self.to_main_page_from_signal_page_button = self.findChild(QPushButton , "backHome2")
+        self.to_main_page_from_signal_page_button.clicked.connect(self.go_to_main_page_from_signal)
+        
         # Initializing the signal viewer
         self.pre_signal_viewer = SignalViewer()
         self.post_signal_viewer = SignalViewer()
@@ -50,7 +56,21 @@ class MainWindow(QMainWindow):
         
         self.cCodeGenerator = self.findChild(QPushButton, "cCodeGenerator")
         self.cCodeGenerator.clicked.connect(self.download_c_code)
-
+        
+        # Initialize signal page viewers and frames
+        self.signal_page_pre_viewer = SignalViewer()
+        self.signal_page_post_viewer = SignalViewer()
+        
+        self.signal_page_pre_viewer_frame = self.findChild(QFrame , "frame_4")
+        self.signal_page_pre_viewer_layout = QVBoxLayout()
+        self.signal_page_pre_viewer_frame.setLayout(self.signal_page_pre_viewer_layout)
+        self.signal_page_pre_viewer_layout.addWidget(self.signal_page_pre_viewer)
+        
+        self.signal_page_post_viewer_frame = self.findChild(QFrame , "frame_5")
+        self.signal_page_post_viewer_layout = QVBoxLayout()
+        self.signal_page_post_viewer_frame.setLayout(self.signal_page_post_viewer_layout)
+        self.signal_page_post_viewer_layout.addWidget(self.signal_page_post_viewer)
+        
         # Initialize all pass page viewer frames
         self.ap_filter_phase_viewer_frame = self.findChild(QFrame , "frame_11")
         self.ap_filter_phase_viewer_layout = QVBoxLayout()
@@ -81,7 +101,7 @@ class MainWindow(QMainWindow):
         self.current_signal = CustomSignal(x , y)
         
         # Initialize the controller
-        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal , self.ap_filter_phase_viewer , self.ap_corrected_phase_viewer)
+        self.controller = Controller(self.pre_signal_viewer , self.post_signal_viewer, self.current_signal , self.ap_filter_phase_viewer , self.ap_corrected_phase_viewer ,  self.signal_page_pre_viewer , self.signal_page_post_viewer)
         
         # initialize the filter designer viewer
         self.designer_viewer = DesignerViewer(self.controller)
@@ -95,6 +115,10 @@ class MainWindow(QMainWindow):
         
         # Initialize Digital Filters Library
         self.digital_filters_library = DigitalFilters()
+        
+        # Initialize browse signal button
+        self.browse_signal_button = self.findChild(QPushButton , "pushButton_11")
+        self.browse_signal_button.clicked.connect(self.browse_signal)
         
         # Initialize play and pause buttons
         self.signal_viewer_play_pause_button = self.findChild(QPushButton , "playPause")
@@ -122,6 +146,7 @@ class MainWindow(QMainWindow):
         self.swap_button.clicked.connect(self.swap_listener)
         
         self.conjugates_checkbox = self.findChild(QCheckBox, "addConjugates")
+        self.conjugates_checkbox.setChecked(True)
         self.conjugates_checkbox.stateChanged.connect(self.conjugates_listener)
         
         # Initialize signal viewers speed modifiers
@@ -129,6 +154,12 @@ class MainWindow(QMainWindow):
         self.signal_viewers_speed_slider.setRange(10,100)
         self.signal_viewers_speed_slider.setValue(50)
         self.signal_viewers_speed_slider.sliderMoved.connect(self.modify_signal_viewers_speed)
+        
+        # Initialize signal page viewers speed modifiers
+        self.signal_page_viewers_speed_slider = self.findChild(QSlider , "horizontalSlider")
+        self.signal_page_viewers_speed_slider.setRange(10,100)
+        self.signal_page_viewers_speed_slider.setValue(50)
+        self.signal_page_viewers_speed_slider.sliderMoved.connect(self.modify_signal_page_viewers_speed)
         
         
         # undo_redo
@@ -401,6 +432,10 @@ class MainWindow(QMainWindow):
     def modify_signal_viewers_speed(self , slider_speed_value):
         slider_speed_value = 110 - slider_speed_value
         self.controller.modify_signal_viewers_speed(slider_speed_value)
+    
+    def modify_signal_page_viewers_speed(self , slider_speed_value):
+        slider_speed_value = 110 - slider_speed_value
+        self.controller.modify_signal_page_viewers_speed(slider_speed_value)
         
     def add_element_combobox_listener(self):
         if self.add_element_combobox.currentText() == 'Zero':
@@ -450,38 +485,63 @@ class MainWindow(QMainWindow):
         else:
             QMessageBox.warning(self, "No File Selected", "Please select a valid CSV file.")
 
+    def go_to_signal_page(self):
+        page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
+        if page_index != -1:
+            self.Pages.setCurrentIndex(page_index)
             
     def go_to_all_pass_filters_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'allpassFilters'))
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)      
-            self.controller.calculate_all_pass_filter_phase()     
-            self.controller.calculate_corrected_phase()
+            # self.controller.calculate_all_pass_filter_phase()     
+            self.controller.ap_corrected_phase_viewer.compute_phase(self.designer_viewer.poles_list , self.designer_viewer.zeros_list)
+
+    def go_to_main_page_from_signal(self):
+        page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
+        if page_index != -1:
+            self.Pages.setCurrentIndex(page_index)  
             
     def go_to_main_page_from_ap(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)     
         # self.designer_viewer.zeros_list.extend(self.controller.original_all_pass_zeros_poles_list[1])
-        current_mode = self.designer_viewer.conjugate_mode
-        current_type = self.designer_viewer.current_type
-        self.designer_viewer.current_mode = False
-        self.designer_viewer.current_type = Type.POLE
-        self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[0][0][0].real,self.controller.original_all_pass_zeros_poles_list[0][0][0].imaginary))
-        self.designer_viewer.current_type = Type.ZERO
-        self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[1][0][0].real , self.controller.original_all_pass_zeros_poles_list[1][0][0].imaginary))
-        self.designer_viewer.current_type = current_type
-        self.designer_viewer.conjugate_mode = current_mode
-        self.controller.compute_new_filter(self.designer_viewer.zeros_list,self.designer_viewer.poles_list)
-        self.controller.compute_magnitude_and_phase()
-        self.controller.all_pass_zeros_poles_list[0].clear()
-        self.controller.all_pass_zeros_poles_list[1].clear()
-        self.controller.original_all_pass_zeros_poles_list[0].clear()
-        self.controller.original_all_pass_zeros_poles_list[1].clear()
+        if (self.controller.ap_filter_added):
+            current_mode = self.designer_viewer.conjugate_mode
+            current_type = self.designer_viewer.current_type
+            self.designer_viewer.current_mode = False
+            self.designer_viewer.current_type = Type.POLE
+            self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[0][0][0].real,self.controller.original_all_pass_zeros_poles_list[0][0][0].imaginary))
+            self.designer_viewer.current_type = Type.ZERO
+            self.designer_viewer.add_element((self.controller.original_all_pass_zeros_poles_list[1][0][0].real , self.controller.original_all_pass_zeros_poles_list[1][0][0].imaginary))
+            self.designer_viewer.current_type = current_type
+            self.designer_viewer.conjugate_mode = current_mode
+            self.controller.compute_new_filter(self.designer_viewer.zeros_list,self.designer_viewer.poles_list)
+            self.controller.compute_magnitude_and_phase()
+            self.controller.all_pass_zeros_poles_list[0].clear()
+            self.controller.all_pass_zeros_poles_list[1].clear()
+            self.controller.original_all_pass_zeros_poles_list[0].clear()
+            self.controller.original_all_pass_zeros_poles_list[1].clear()
     
     def download_c_code(self):
         self.generator.save_to_file(self.designer_viewer.poles_list, self.designer_viewer.zeros_list, "Filter.c")
-        
+    
+    def browse_signal(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.ReadOnly
+        file_path, _ = QFileDialog.getOpenFileName(
+            self, 
+            "Open CSV File", 
+            "", 
+            "CSV Files (*.csv);;All Files (*)", 
+            options=options
+        )
+
+        if file_path:
+            self.controller.browse_signal(file_path)
+        else:
+            QMessageBox.warning(self, "No File Selected", "Please select a valid CSV file.")   
         
 if __name__ == '__main__':
     app = QApplication(sys.argv)
