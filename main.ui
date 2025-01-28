@@ -117,7 +117,7 @@ QSlider::add-page:horizontal {
     <item row="0" column="0">
      <widget class="QStackedWidget" name="pages">
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="homePage">
        <layout class="QGridLayout" name="gridLayout_2">
@@ -2354,7 +2354,7 @@ border: 1px solid #ffffff;
 </string>
                     </property>
                     <property name="text">
-                     <string>Filter 01</string>
+                     <string>a = 0.1</string>
                     </property>
                    </widget>
                   </item>
@@ -2379,7 +2379,7 @@ border: 1px solid #ffffff;
 </string>
                     </property>
                     <property name="text">
-                     <string>Filter 02</string>
+                     <string>a = 0.2</string>
                     </property>
                    </widget>
                   </item>
@@ -2411,7 +2411,7 @@ border: 1px solid #ffffff;
 </string>
                     </property>
                     <property name="text">
-                     <string>Filter 03</string>
+                     <string>a = 0.3</string>
                     </property>
                    </widget>
                   </item>
@@ -2436,7 +2436,7 @@ border: 1px solid #ffffff;
 </string>
                     </property>
                     <property name="text">
-                     <string>Filter 04</string>
+                     <string>a = 0.4</string>
                     </property>
                    </widget>
                   </item>
@@ -2468,7 +2468,7 @@ border: 1px solid #ffffff;
 </string>
                     </property>
                     <property name="text">
-                     <string>Filter 05</string>
+                     <string>a = 0.5</string>
                     </property>
                    </widget>
                   </item>
@@ -2701,6 +2701,16 @@ QComboBox QAbstractItemView {
 }
 </string>
                      </property>
+                     <item>
+                      <property name="text">
+                       <string>Custom Filter 01</string>
+                      </property>
+                     </item>
+                     <item>
+                      <property name="text">
+                       <string>Custom Filter 02</string>
+                      </property>
+                     </item>
                     </widget>
                    </item>
                   </layout>
