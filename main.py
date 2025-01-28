@@ -268,6 +268,9 @@ class MainWindow(QMainWindow):
         self.ap_filter10_button = self.findChild(QPushButton , "pushButton_19")
         self.ap_filter10_button.clicked.connect(self.apply_ap_filter_5)
     
+        self.browse_signal_button = self.findChild(QPushButton, "pushButton_29")
+        self.browse_signal_button.clicked.connect(self.browse_signal)
+    
     def add_custom_all_pass_listener(self):
         coef = float(self.custom_all_pass_input.text())
         self.all_pass_filters_library.make_custom_all_pass(coef)
