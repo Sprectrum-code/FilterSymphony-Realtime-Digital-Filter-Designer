@@ -7,6 +7,7 @@ class allPassFiltersLibrary:
             pole = (pole_real, 0.0)  
             zero = (1/pole_real, 0.0) 
             self.filter_library[f'ap{i+1}'] = (pole, zero)
+        self.filter_library['ap10'] = ((0.95, 0.0), (1/0.95, 0.0))    
         self.custom_filter_library = {}
     
     def get_filter(self, filter_name):
