@@ -254,19 +254,19 @@ class MainWindow(QMainWindow):
         self.ap_filter5_button.clicked.connect(self.apply_ap_filter_5)
         
         self.ap_filter6_button = self.findChild(QPushButton , "pushButton_20")
-        self.ap_filter6_button.clicked.connect(self.apply_ap_filter_5)
+        self.ap_filter6_button.clicked.connect(self.apply_ap_filter_6)
     
         self.ap_filter7_button = self.findChild(QPushButton , "pushButton_24")
-        self.ap_filter7_button.clicked.connect(self.apply_ap_filter_5)
+        self.ap_filter7_button.clicked.connect(self.apply_ap_filter_7)
     
         self.ap_filter8_button = self.findChild(QPushButton , "pushButton_15")
-        self.ap_filter8_button.clicked.connect(self.apply_ap_filter_5)
+        self.ap_filter8_button.clicked.connect(self.apply_ap_filter_8)
     
         self.ap_filter9_button = self.findChild(QPushButton , "pushButton_25")
-        self.ap_filter9_button.clicked.connect(self.apply_ap_filter_5)
+        self.ap_filter9_button.clicked.connect(self.apply_ap_filter_8)
     
         self.ap_filter10_button = self.findChild(QPushButton , "pushButton_19")
-        self.ap_filter10_button.clicked.connect(self.apply_ap_filter_5)
+        self.ap_filter10_button.clicked.connect(self.apply_ap_filter_10)
     
     def add_custom_all_pass_listener(self):
         coef = float(self.custom_all_pass_input.text())
