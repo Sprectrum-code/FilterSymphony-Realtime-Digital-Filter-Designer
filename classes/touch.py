@@ -2,22 +2,24 @@ import sys
 import numpy as np
 from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtGui import QPainter, QPen
+from classes.signalViewer import SignalViewer
+
 from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QMainWindow, QLabel, QVBoxLayout, QWidget
 import pyqtgraph as pg  # Install via `pip install pyqtgraph`
 
 
 class RealTimeSignal():
-    def __init__(self, speed_control):
+    def __init__(self, speed_control, controller):
         # Create a mouse tracking area
         self.canvas = MouseTrackingCanvas(self)
 
         # Set up PyQtGraph for real-time signal display
-        self.draw_graph = pg.PlotWidget()
+        self.draw_graph = None
         self.draw_graph.setLabel("left", "Signal Amplitude")
         self.draw_graph.setLabel("bottom", "Time (ms)")
         # self.draw_graph.setYRange(-300, 300)
 
-        self.filter_graph = pg.PlotWidget()
+        self.filter_graph = None
         self.filter_graph.setLabel("left", "Signal Amplitude")
         self.filter_graph.setLabel("bottom", "Time (ms)")
         # self.filter_graph.setYRange(-300, 300)
@@ -48,6 +50,7 @@ class RealTimeSignal():
         mid_y = self.draw_graph.height() / 2
         adjusted_signal = [point + mid_y for point in self.signal_data]
         # Update the graph
+        
         self.draw_graph.plot(adjusted_signal, clear=True)
     def update_speed(self, value):
         """Update the timer speed based on slider value."""
@@ -60,7 +63,9 @@ class MouseTrackingCanvas(QWidget):
         # self.setFixedSize(800, 200)
         # self.setMouseTracking(True)  # Enable mouse tracking
         self.signal_data_y = []
-
+        self.signal_data_x = []
+        self.time_step = 0
+        
     def mouseMoveEvent(self, event):
         """Capture mouse movement and generate a signal."""
         # Use the y-coordinate as the signal (you can change to x if needed)
@@ -69,7 +74,13 @@ class MouseTrackingCanvas(QWidget):
 
         # Generate signal based on frequency
         signal_value = amplitude * frequency
-        self.signal_data_y.append(signal_value)
+
+        # Store the signal value and increment time step before appending
+        for _ in range(int(frequency)):
+            self.signal_data_y.append(signal_value)
+            self.signal_data_x.append(self.time_step + 1/int(frequency))
+            self.time_step +=  1/int(frequency)
+        
     def paintEvent(self, event):
         """Draw the canvas border."""
         painter = QPainter(self)

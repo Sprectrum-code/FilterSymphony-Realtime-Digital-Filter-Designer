@@ -56,6 +56,9 @@ class MainWindow(QMainWindow):
         self.to_main_page_from_signal_page_button = self.findChild(QPushButton , "backHome2")
         self.to_main_page_from_signal_page_button.clicked.connect(self.go_to_main_page_from_signal)
         
+        
+        self.draw_signal_tool = RealTimeSignal(self.draw_signal_speed_slider, self.controller)
+
         # Initializing the signal viewer
         self.pre_signal_viewer = SignalViewer()
         self.post_signal_viewer = SignalViewer()
@@ -305,7 +308,6 @@ class MainWindow(QMainWindow):
         #Speed control
         self.draw_signal_speed_slider = self.findChild(QSlider, "horizontalSlider")
    
-        self.draw_signal_tool = RealTimeSignal(self.draw_signal_speed_slider)
         self.mouse_tracker = MouseTrackingCanvas()
         self.mouse_tracker_frame = self.findChild(QFrame, "frame_6")
         self.mouse_tracker_frame_layout = QVBoxLayout()
@@ -615,7 +617,7 @@ class MainWindow(QMainWindow):
             self.draw_signal_tool.canvas.setMouseTracking(False)
         
     
-        def browse_signal(self):
+    def browse_signal(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         file_path, _ = QFileDialog.getOpenFileName(
