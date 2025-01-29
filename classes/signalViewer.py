@@ -65,3 +65,9 @@ class SignalViewer(Viewer):
     def change_viewer_speed(self , speed_value):
         self.cine_speed = speed_value
         self.play_timer()
+
+    def clear_viewer_content(self):
+        self.current_signal[0] = list(self.current_signal[0])
+        self.current_signal[1] = list(self.current_signal[1])
+        self.current_signal[0].clear()
+        self.current_signal[1].clear()

@@ -39,6 +39,10 @@ class Controller():
         self.compute_magnitude_and_phase()
     
     def browse_signal(self , file_path):
+        self.pre_signal_viewer.clear_viewer_content()
+        self.post_signal_viewer.clear_viewer_content()
+        self.signal_page_pre_viewer.clear_viewer_content()
+        self.signal_page_post_viewer.clear_viewer_content()
         read_data = pd.read_csv(file_path)
         time_list = read_data['Time'].tolist()
         signal_list = read_data['Signal'].tolist()
@@ -91,6 +95,8 @@ class Controller():
     def replay_signal_viewers(self):
         self.pre_signal_viewer.current_signal_plotting_index = 0
         self.post_signal_viewer.current_signal_plotting_index = 0
+        self.signal_page_pre_viewer.current_signal_plotting_index = 0
+        self.signal_page_post_viewer.current_signal_plotting_index = 0
     
     def modify_signal_viewers_speed(self , new_speed):
         self.pre_signal_viewer.change_viewer_speed(new_speed)

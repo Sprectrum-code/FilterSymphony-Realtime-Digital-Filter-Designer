@@ -154,6 +154,7 @@ class MainWindow(QMainWindow):
         self.removal_button.clicked.connect(self.remove_listener)
         
         self.swap_combobox = self.findChild(QComboBox, "swapComboBox")
+        self.swap_combobox.setDisabled(True)
         # self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
         
         self.swap_button = self.findChild(QPushButton, "pushButton_27")
@@ -316,14 +317,14 @@ class MainWindow(QMainWindow):
         self.mouse_tracker_frame = self.findChild(QFrame, "frame_6")
         self.mouse_tracker_frame_layout = QVBoxLayout()
         self.mouse_tracker_frame.setLayout(self.mouse_tracker_frame_layout)
-        # self.mouse_tracker_frame_layout.addWidget(self.draw_signal_tool.canvas)
+        self.mouse_tracker_frame_layout.addWidget(self.draw_signal_tool.canvas)
         
         # viewer one
         self.drawn_signal_viewer_frame = self.findChild(QFrame, "frame_4")
         self.drawn_signal_viewer_frame_layout = QVBoxLayout()
         self.drawn_signal_viewer = Viewer()
         self.drawn_signal_viewer_frame.setLayout(self.drawn_signal_viewer_frame_layout)
-        # self.drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.draw_graph)
+        self.drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.draw_graph)
 
         
         # viewer two
@@ -331,7 +332,7 @@ class MainWindow(QMainWindow):
         self.filtered_drawn_signal_viewer_frame_layout = QVBoxLayout()
         self.filtered_drawn_signal_viewer = Viewer()
         self.filtered_drawn_signal_viewer_frame.setLayout(self.filtered_drawn_signal_viewer_frame_layout)
-        # self.filtered_drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.filter_graph)
+        self.filtered_drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.filter_graph)
         
         #Speed control
         self.draw_signal_speed_slider = self.findChild(QFrame, "horizontalSlider")
@@ -573,8 +574,10 @@ class MainWindow(QMainWindow):
     def go_to_main_page_from_signal(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
         if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)  
-    
+            self.Pages.setCurrentIndex(page_index)
+            self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
+            self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
+            
     def go_to_drawing_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
         if page_index != -1:
@@ -617,6 +620,10 @@ class MainWindow(QMainWindow):
     def turn_draw_mode(self):
         if self.enable_drawing_checkbox.isChecked():
             self.draw_signal_tool.canvas.toggle_timer(True)
+            self.pre_signal_viewer.clear_viewer_content()
+            self.post_signal_viewer.clear_viewer_content()
+            self.signal_page_pre_viewer.clear_viewer_content()
+            self.signal_page_post_viewer.clear_viewer_content()
             
         else:
             self.draw_signal_tool.canvas.toggle_timer(False)
