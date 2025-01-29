@@ -1,4 +1,5 @@
 import sys
+import numpy as np
 from PyQt5.QtWidgets import (
     QApplication,
     QGraphicsScene,
@@ -46,7 +47,52 @@ class DigitalFilterRealization(QMainWindow):
         self.save_button.clicked.connect(self.save_as_pdf)
         self.layout.addWidget(self.save_button)
 
-    def draw_realization(self):
+    def format_complex_number(self, num):
+        """
+        Format a complex number:
+        - Remove the imaginary part if it's zero.
+        - Round real and imaginary parts to two decimal places.
+        """
+        real_part = round(num.real, 2)
+        imag_part = round(num.imag, 2)
+
+        if imag_part == 0:
+            return f"{real_part}"
+        else:
+            return f"{real_part} + {imag_part}j"
+        
+    def format_zeros_poles(self, zeros, poles):
+        """
+        Format the zeros and poles lists:
+        - Remove imaginary part if zero.
+        - Round to two decimal places.
+        """
+        self.zeros = [self.format_complex_number(z) for z in zeros]
+        self.poles = [self.format_complex_number(p) for p in poles]
+
+    def set_coeffients(self, zeros, poles):
+        # Extract zeros and poles from the lists
+        zeros = [zero.real + 1j * zero.imaginary for (zero, _) in zeros]
+        poles = [pole.real + 1j * pole.imaginary for (pole, _) in poles]
+
+            # Compute numerator coefficients from zeros
+        numerator_coeffs = np.poly(zeros)  # [b_M, b_{M-1}, ..., b_0]
+
+        # Compute denominator coefficients from poles
+        denominator_coeffs = np.poly(poles)  # [a_N, a_{N-1}, ..., a_0]
+
+        # Normalize denominator coefficients so that a0 = 1
+        denominator_coeffs = denominator_coeffs / denominator_coeffs[0]
+
+        # Reverse coefficients to get them in ascending order of z^{-1}
+        self.zeros = numerator_coeffs[::-1]  # [b0, b1, b2, ...]
+        self.poles = denominator_coeffs[::-1]  # [a0, a1, a2, ...]
+
+        self.format_zeros_poles(self.zeros, self.poles)
+
+    def draw_realization(self, zeros, poles):
+        self.set_coeffients(zeros, poles)
+
         if self.realization_type == "direct1" :
             self.draw_direct_form_1()
         elif self.realization_type == "direct2":

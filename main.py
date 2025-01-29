@@ -57,7 +57,6 @@ class MainWindow(QMainWindow):
         self.to_main_page_from_signal_page_button.clicked.connect(self.go_to_main_page_from_signal)
         
         
-        self.draw_signal_tool = RealTimeSignal(self.draw_signal_speed_slider, self.controller)
 
         # Initializing the signal viewer
         self.pre_signal_viewer = SignalViewer()
@@ -305,12 +304,14 @@ class MainWindow(QMainWindow):
                                                                   self.cascade_form_frame,
                                                                   "cascade")
         
-
+ 
 
         #draw page
+
         #Speed control
         self.draw_signal_speed_slider = self.findChild(QSlider, "horizontalSlider")
-   
+        self.draw_signal_tool = RealTimeSignal(self.draw_signal_speed_slider, self.controller)
+
         self.mouse_tracker = MouseTrackingCanvas()
         self.mouse_tracker_frame = self.findChild(QFrame, "frame_6")
         self.mouse_tracker_frame_layout = QVBoxLayout()
@@ -555,7 +556,7 @@ class MainWindow(QMainWindow):
             self.designer_viewer.import_filter(file_path)
         else:
             QMessageBox.warning(self, "No File Selected", "Please select a valid CSV file.")
-
+    
     def go_to_signal_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
         if page_index != -1:
@@ -583,9 +584,9 @@ class MainWindow(QMainWindow):
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)      
         # we need to add functions that set the zeros and poles
-        self.cascade_form_realization.draw_cascaded_form()
-        self.direct_form_1_realization.draw_direct_form_1()
-        self.direct_form_2_realization.draw_directform_2()
+        self.cascade_form_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
+        self.direct_form_1_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
+        self.direct_form_2_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
         
     def go_to_main_page_from_ap(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
@@ -614,10 +615,10 @@ class MainWindow(QMainWindow):
         
     def turn_draw_mode(self):
         if self.enable_drawing_checkbox.isChecked():
-            self.draw_signal_tool.canvas.setMouseTracking(True)
+            self.draw_signal_tool.canvas.toggle_timer(True)
             
         else:
-            self.draw_signal_tool.canvas.setMouseTracking(False)
+            self.draw_signal_tool.canvas.toggle_timer(False)
         
     
     def browse_signal(self):
