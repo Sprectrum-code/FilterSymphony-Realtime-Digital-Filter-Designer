@@ -279,6 +279,43 @@ class DesignerViewer(pg.PlotItem):
         self.redo_stack.clear()
         self.push_in_undo_stack()
         
+    def inverse(self):
+        new_poles_list = []
+        new_zeros_list = []
+        for (item, conj_item) in self.poles_list:
+            new_zero_conj = None
+            new_zero = Zero((item.real, item.imaginary))
+            if conj_item:
+                new_zero_conj = Zero((conj_item.real, conj_item.imaginary))
+                new_zero.conjugate = new_zero_conj
+                new_zero_conj.conjugate = new_zero
+            new_zeros_list.append((new_zero, new_zero_conj))
+        for (item, conj_item) in self.zeros_list:
+            new_pole_conj = None
+            new_pole = Pole((item.real, item.imaginary))
+            if conj_item:
+                new_pole_conj = Pole((conj_item.real, conj_item.imaginary))
+                new_pole.conjugate = new_pole_conj
+                new_pole_conj.conjugate = new_pole
+            new_poles_list.append((new_pole, new_pole_conj))
+        self.zeros_list = new_zeros_list
+        self.poles_list = new_poles_list
+        circle = self.dataItems[0]
+        self.clear()
+        self.addItem(circle)
+        for (zero, conj_zero) in self.zeros_list:
+            self.addItem(zero)
+            if conj_zero:
+                self.addItem(conj_zero)
+        for (pole, conj_pole) in self.poles_list:
+            self.addItem(pole)
+            if conj_pole:
+                self.addItem(conj_pole)
+        self.controller.compute_new_filter(self.zeros_list, self.poles_list)
+        self.redo_stack.clear()
+        self.push_in_undo_stack()
+        
+    
     def export_current_filter(self):
         real_zeros_list, imaginary_zeros_list, real_poles_list, imaginary_poles_list, zero_conj_list, pole_conj_list = [],[],[],[],[],[]
         for (zero, conj_zero) in self.zeros_list:
@@ -344,6 +381,6 @@ class DesignerViewer(pg.PlotItem):
         self.controller.compute_new_filter(self.zeros_list, self.poles_list)
         self.redo_stack.clear()
         self.push_in_undo_stack()
-
+    
 
         

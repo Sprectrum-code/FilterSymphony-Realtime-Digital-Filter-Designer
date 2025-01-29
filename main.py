@@ -316,14 +316,14 @@ class MainWindow(QMainWindow):
         self.mouse_tracker_frame = self.findChild(QFrame, "frame_6")
         self.mouse_tracker_frame_layout = QVBoxLayout()
         self.mouse_tracker_frame.setLayout(self.mouse_tracker_frame_layout)
-        self.mouse_tracker_frame_layout.addWidget(self.draw_signal_tool.canvas)
+        # self.mouse_tracker_frame_layout.addWidget(self.draw_signal_tool.canvas)
         
         # viewer one
         self.drawn_signal_viewer_frame = self.findChild(QFrame, "frame_4")
         self.drawn_signal_viewer_frame_layout = QVBoxLayout()
         self.drawn_signal_viewer = Viewer()
         self.drawn_signal_viewer_frame.setLayout(self.drawn_signal_viewer_frame_layout)
-        self.drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.draw_graph)
+        # self.drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.draw_graph)
 
         
         # viewer two
@@ -331,7 +331,7 @@ class MainWindow(QMainWindow):
         self.filtered_drawn_signal_viewer_frame_layout = QVBoxLayout()
         self.filtered_drawn_signal_viewer = Viewer()
         self.filtered_drawn_signal_viewer_frame.setLayout(self.filtered_drawn_signal_viewer_frame_layout)
-        self.filtered_drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.filter_graph)
+        # self.filtered_drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.filter_graph)
         
         #Speed control
         self.draw_signal_speed_slider = self.findChild(QFrame, "horizontalSlider")
@@ -532,7 +532,8 @@ class MainWindow(QMainWindow):
             self.designer_viewer.remove_all()
     
     def swap_listener(self):
-        self.designer_viewer.swap(self.swap_combobox.currentText())
+        # self.designer_viewer.swap(self.swap_combobox.currentText())
+        self.designer_viewer.inverse()
         
     def conjugates_listener(self):
         if self.conjugates_checkbox.isChecked():
