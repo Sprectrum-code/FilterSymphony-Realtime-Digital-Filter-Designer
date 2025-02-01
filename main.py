@@ -610,9 +610,10 @@ class MainWindow(QMainWindow):
         
     def turn_draw_mode(self):
         if self.enable_drawing_checkbox.isChecked():
-            self.draw_signal_tool.canvas.toggle_timer(True)
             self.pre_signal_viewer.clear_viewer_content()
             self.post_signal_viewer.clear_viewer_content()
+            self.draw_signal_tool.canvas.toggle_timer(True)
+
             # self.signal_page_pre_viewer.clear_viewer_content()
             # self.signal_page_post_viewer.clear_viewer_content()
             

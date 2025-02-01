@@ -139,4 +139,3 @@ class Controller():
         self.set_current_signal()
         
         
-    

@@ -19,7 +19,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtPrintSupport import QPrinter
 
 
-class DigitalFilterRealization(QMainWindow):
+class DigitalFilterRealization(QWidget):
     def __init__(self, print_button, frame, type):
         super().__init__()
 
@@ -137,9 +137,9 @@ class DigitalFilterRealization(QMainWindow):
             self.set_coefficients(zeros, poles)
 
             # Decompose into cascade form
-            sos = self.decompose_to_cascade(zeros, poles)
-            self.zeros_cascade = [section[0] for section in sos]  # Store cascade zeros
-            self.poles_cascade = [section[1] for section in sos]  # Store cascade poles
+            # sos = self.decompose_to_cascade(zeros, poles)
+            # self.zeros_cascade = [section[0] for section in sos]  # Store cascade zeros
+            # self.poles_cascade = [section[1] for section in sos]  # Store cascade poles
 
             if self.realization_type == "direct1":
                 self.draw_direct_form_1()
