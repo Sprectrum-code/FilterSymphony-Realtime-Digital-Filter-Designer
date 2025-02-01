@@ -52,11 +52,11 @@ class RealTimeSignal():
             self.canvas.signal_data_y = []  # Clear the processed data
             self.canvas.signal_data_x = []
             
-        self.current_controller.current_signal = self.current_signal.signal
-        self.current_controller.signal_page_pre_viewer.play_timer()
-        self.current_controller.signal_page_post_viewer.play_timer()
-        self.current_controller.replay_signal_viewers()
-        self.current_controller.compute_new_filter(self.current_controller.designer_viewer.zeros_list,self.current_controller.designer_viewer.poles_list)
+            self.current_controller.current_signal = self.current_signal.signal
+            self.current_controller.signal_page_pre_viewer.play_timer()
+            self.current_controller.signal_page_post_viewer.play_timer()
+            # self.current_controller.replay_signal_viewers()
+            self.current_controller.compute_new_filter(self.current_controller.designer_viewer.zeros_list,self.current_controller.designer_viewer.poles_list)
       
     def update_speed(self, value):
         """Update the timer speed based on slider value."""

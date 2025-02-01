@@ -154,6 +154,7 @@ class MainWindow(QMainWindow):
         self.removal_button.clicked.connect(self.remove_listener)
         
         self.swap_combobox = self.findChild(QComboBox, "swapComboBox")
+        self.swap_combobox.setDisabled(True)
         # self.swap_combobox.currentIndexChanged.connect(self.swap_listener)
         
         self.swap_button = self.findChild(QPushButton, "pushButton_27")
@@ -572,8 +573,10 @@ class MainWindow(QMainWindow):
     def go_to_main_page_from_signal(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
         if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)  
-    
+            self.Pages.setCurrentIndex(page_index)
+            self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
+            self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
+            
     def go_to_drawing_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
         if page_index != -1:
@@ -616,6 +619,10 @@ class MainWindow(QMainWindow):
     def turn_draw_mode(self):
         if self.enable_drawing_checkbox.isChecked():
             self.draw_signal_tool.canvas.toggle_timer(True)
+            self.pre_signal_viewer.clear_viewer_content()
+            self.post_signal_viewer.clear_viewer_content()
+            self.signal_page_pre_viewer.clear_viewer_content()
+            self.signal_page_post_viewer.clear_viewer_content()
             
         else:
             self.draw_signal_tool.canvas.toggle_timer(False)
