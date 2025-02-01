@@ -35,8 +35,8 @@ class MainWindow(QMainWindow):
         # self.AllPassFilterPage = self.Pages.indexOf(self.findChild(QWidget , 'allpassFilters')) 
         
         # Initialize traverse_pages_buttons
-        self.to_all_pass_filter_page_button = self.findChild(QPushButton , "signalDrawing")
-        self.to_all_pass_filter_page_button.clicked.connect(self.go_to_drawing_page)
+        self.to_drawing_page_button = self.findChild(QPushButton , "signalDrawing")
+        self.to_drawing_page_button.clicked.connect(self.go_to_drawing_page)
         
         
         self.to_realization_page_button = self.findChild(QPushButton,"filterRealization")
@@ -78,12 +78,14 @@ class MainWindow(QMainWindow):
         self.signal_page_pre_viewer_frame = self.findChild(QFrame , "frame_4")
         self.signal_page_pre_viewer_layout = QVBoxLayout()
         self.signal_page_pre_viewer_frame.setLayout(self.signal_page_pre_viewer_layout)
-        self.signal_page_pre_viewer_layout.addWidget(self.signal_page_pre_viewer)
+        
+        # self.signal_page_pre_viewer_layout.addWidget(self.pre_signal_viewer)
         
         self.signal_page_post_viewer_frame = self.findChild(QFrame , "frame_5")
         self.signal_page_post_viewer_layout = QVBoxLayout()
         self.signal_page_post_viewer_frame.setLayout(self.signal_page_post_viewer_layout)
-        self.signal_page_post_viewer_layout.addWidget(self.signal_page_post_viewer)
+        #modified by deeb to add the viewers into the drawing page
+        # self.signal_page_post_viewer_layout.addWidget(self.post_signal_viewer)
         
         # Initialize all pass page viewer frames
         self.ap_filter_phase_viewer_frame = self.findChild(QFrame , "frame_11")
@@ -318,22 +320,6 @@ class MainWindow(QMainWindow):
         self.mouse_tracker_frame_layout = QVBoxLayout()
         self.mouse_tracker_frame.setLayout(self.mouse_tracker_frame_layout)
         self.mouse_tracker_frame_layout.addWidget(self.draw_signal_tool.canvas)
-        
-        # viewer one
-        self.drawn_signal_viewer_frame = self.findChild(QFrame, "frame_4")
-        self.drawn_signal_viewer_frame_layout = QVBoxLayout()
-        self.drawn_signal_viewer = Viewer()
-        self.drawn_signal_viewer_frame.setLayout(self.drawn_signal_viewer_frame_layout)
-        self.drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.draw_graph)
-
-        
-        # viewer two
-        self.filtered_drawn_signal_viewer_frame = self.findChild(QFrame, "frame_5")
-        self.filtered_drawn_signal_viewer_frame_layout = QVBoxLayout()
-        self.filtered_drawn_signal_viewer = Viewer()
-        self.filtered_drawn_signal_viewer_frame.setLayout(self.filtered_drawn_signal_viewer_frame_layout)
-        self.filtered_drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.filter_graph)
-        
         #Speed control
         self.draw_signal_speed_slider = self.findChild(QFrame, "horizontalSlider")
         
@@ -562,7 +548,7 @@ class MainWindow(QMainWindow):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)
-            
+           
     def go_to_all_pass_filters_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'allpassFilters'))
         if page_index != -1:
@@ -580,7 +566,17 @@ class MainWindow(QMainWindow):
     def go_to_drawing_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
         if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)      
+            self.Pages.setCurrentIndex(page_index) 
+            for i in reversed(range(self.signal_page_post_viewer_frame.count())):
+                self.signal_page_post_viewer_layout.itemAt(i).widget().setParent(None)
+
+            for i in reversed(range(self.signal_page_pre_viewer_frame.count())):
+                self.signal_page_pre_viewer_layout.itemAt(i).widget().setParent(None)
+
+            # Reuse the existing viewers from the home page
+            self.signal_page_pre_viewer_layout.addWidget(self.pre_signal_viewer)
+            self.signal_page_post_viewer_layout.addWidget(self.post_signal_viewer)
+        
     
     def go_to_realization_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'realizationPage'))
@@ -621,8 +617,8 @@ class MainWindow(QMainWindow):
             self.draw_signal_tool.canvas.toggle_timer(True)
             self.pre_signal_viewer.clear_viewer_content()
             self.post_signal_viewer.clear_viewer_content()
-            self.signal_page_pre_viewer.clear_viewer_content()
-            self.signal_page_post_viewer.clear_viewer_content()
+            # self.signal_page_pre_viewer.clear_viewer_content()
+            # self.signal_page_post_viewer.clear_viewer_content()
             
         else:
             self.draw_signal_tool.canvas.toggle_timer(False)
