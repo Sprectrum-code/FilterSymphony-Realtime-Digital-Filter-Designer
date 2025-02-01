@@ -28,8 +28,8 @@ class Controller():
         self.all_pass_zeros_poles_list = [[],[]]
         self.original_all_pass_zeros_poles_list = [[],[]]
         self.ap_filter_added = False
-        self.signal_page_pre_viewer = signal_page_pre_viewer
-        self.signal_page_post_viewer = signal_page_post_viewer
+        self.signal_page_pre_viewer = pre_signal_viewer
+        self.signal_page_post_viewer = post_signal_viewer
         
     def set_current_signal(self):
         self.pre_signal_viewer.current_signal = self.current_signal
