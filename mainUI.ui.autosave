@@ -1634,27 +1634,7 @@ border-radius: 10px
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_24">
-                <item>
-                 <widget class="QPushButton" name="pushButton_14">
-                  <property name="maximumSize">
-                   <size>
-                    <width>400</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Download</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <layout class="QHBoxLayout" name="horizontalLayout_24"/>
               </item>
              </layout>
             </item>
@@ -1721,27 +1701,7 @@ border-radius: 10px
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_30">
-                <item>
-                 <widget class="QPushButton" name="pushButton_12">
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Download</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <layout class="QHBoxLayout" name="horizontalLayout_30"/>
               </item>
              </layout>
             </item>
@@ -1790,27 +1750,7 @@ border-radius: 10px
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_31">
-                <item>
-                 <widget class="QPushButton" name="pushButton_13">
-                  <property name="maximumSize">
-                   <size>
-                    <width>300</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-size: 16px;
-font-weight: bold;
-border: 1px solid #ffffff;
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Download</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
+               <layout class="QHBoxLayout" name="horizontalLayout_31"/>
               </item>
              </layout>
             </item>

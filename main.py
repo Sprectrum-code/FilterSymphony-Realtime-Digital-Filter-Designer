@@ -301,14 +301,11 @@ class MainWindow(QMainWindow):
         self.print_form_1_button = self.findChild(QPushButton , "pushButton_12")
         self.print_form_2_button = self.findChild(QPushButton , "pushButton_13")
         
-        self.direct_form_1_realization = DigitalFilterRealization(self.print_form_1_button, 
-                                                                  self.direct_form_1_frame,
+        self.direct_form_1_realization = DigitalFilterRealization(self.print_form_1_button,self.direct_form_1_frame,
                                                                   "direct1")
-        self.direct_form_2_realization = DigitalFilterRealization(self.print_form_2_button, 
-                                                                  self.direct_form_2_frame,
+        self.direct_form_2_realization = DigitalFilterRealization(self.print_form_2_button ,self.direct_form_2_frame,
                                                                   "direct2")
-        self.cascade_form_realization = DigitalFilterRealization(self.print_cascade_button, 
-                                                                  self.cascade_form_frame,
+        self.cascade_form_realization = DigitalFilterRealization(self.print_cascade_button,self.cascade_form_frame,
                                                                   "cascade")
         
  
@@ -578,6 +575,7 @@ class MainWindow(QMainWindow):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'realizationPage'))
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)      
+        
         # we need to add functions that set the zeros and poles
         self.cascade_form_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
         self.direct_form_1_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
