@@ -13,20 +13,22 @@ from PyQt5.QtWidgets import (
     QWidget,
     QPushButton,
     QFileDialog,
+    
 )
-from PyQt5.QtGui import QPen, QBrush, QColor
+from classes.zero import Zero
+from classes.pole import Pole
+from PyQt5.QtGui import QPen, QBrush, QColor, QFont
 from PyQt5.QtCore import Qt
 from PyQt5.QtPrintSupport import QPrinter
 
 
-class DigitalFilterRealization(QMainWindow):
-    def __init__(self, print_button, frame, type):
+class DigitalFilterRealization(QWidget):
+    def __init__(self, button, frame, type):
         super().__init__()
 
         # Main layout
         self.central_widget = frame
         self.layout = QVBoxLayout()
-        self.central_widget.setLayout(self.layout)
         self.realization_type = type
         self.zeros= [1,1,1,1,1]
         self.poles = [1,1,1]
@@ -34,20 +36,23 @@ class DigitalFilterRealization(QMainWindow):
         self.y_delays = []
         self.zeros_cascade = []
         self.poles_cascade = []
+        self.font = QFont()
+        self.font.setPointSize(10)  # Set desired font size
+        self.text_font = QFont()
+        self.text_font
+        self.text_font.setPointSize(8)  # Set desired font size
+
         # Create Graphics Scene
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
-        self.layout.addWidget(self.view)
 
         # Add "Generate" button
-        self.generate_button = QPushButton("Generate Filter Diagram")
-        self.generate_button.clicked.connect(self.draw_cascaded_form)
-        # self.layout.addWidget(self.generate_button)
-
+        # self.generate_button = QPushButton("Generate Filter Diagram")
+        # self.generate_button.clicked.connect(self.draw_cascaded_form)
+        # # self.layout.addWidget(self.generate_button)
         # Add "Save as PDF" button
-        self.save_button =  QPushButton("Save as PDF")
+        self.save_button =  button
         self.save_button.clicked.connect(self.save_as_pdf)
-        self.layout.addWidget(self.save_button)
 
     def format_complex_number(self, num):
         """
@@ -95,16 +100,31 @@ class DigitalFilterRealization(QMainWindow):
 
         self.format_zeros_poles(self.zeros, self.poles)
 
-    import numpy as np
+    def extract_complex_list(self, paired_objects):
+        """
+        Extract real and imaginary parts from a list of Zero or Pole objects
+        and return a list of complex numbers.
+        """
+        complex_list = []
+
+        for obj, conjugate in paired_objects:
+            complex_list.append(complex(obj.real, obj.imaginary))  # Add the main object
+        if conjugate:  # Add the conjugate if it exists
+            complex_list.append(complex(conjugate.real, conjugate.imaginary))
+    
+        return complex_list
 
     def decompose_to_cascade(self, zeros, poles):
         """
         Decompose the filter into a cascade of second-order sections (SOS).
         Each section is a quadratic equation.
         """
+        zeros_list = self.extract_complex_list(zeros)
+        poles_list = self.extract_complex_list(poles)
+
         # Convert inputs to NumPy arrays and ensure they contain finite values
-        zeros = np.asarray(zeros, dtype=complex)
-        poles = np.asarray(poles, dtype=complex)
+        zeros = np.asarray(zeros_list, dtype=complex)
+        poles = np.asarray(poles_list, dtype=complex)
 
         # Check for non-finite values (e.g., NaN, Inf)
         if not np.all(np.isfinite(zeros)) or not np.all(np.isfinite(poles)):
@@ -135,16 +155,22 @@ class DigitalFilterRealization(QMainWindow):
         return sos
     def draw_realization(self, zeros, poles):
             self.set_coefficients(zeros, poles)
-
+            print(f'zeros: {zeros}, poles: {poles}')
             # Decompose into cascade form
-            sos = self.decompose_to_cascade(zeros, poles)
-            self.zeros_cascade = [section[0] for section in sos]  # Store cascade zeros
-            self.poles_cascade = [section[1] for section in sos]  # Store cascade poles
+            if self.realization_type == 'cascade':
+                sos = self.decompose_to_cascade(zeros, poles)
+                self.zeros_cascade = [section[0] for section in sos]  # Store cascade zeros
+                self.poles_cascade = [section[1] for section in sos]  # Store cascade poles
+
+            self.central_widget.setLayout(self.layout)
+            self.layout.addWidget(self.view)
+            # self.layout.addWidget(self.save_button)
+
 
             if self.realization_type == "direct1":
                 self.draw_direct_form_1()
             elif self.realization_type == "direct2":
-                self.draw_direct_form_2()
+                self.draw_directform_2()
             elif self.realization_type == "cascade":
                 self.draw_cascaded_form()
     
@@ -159,12 +185,12 @@ class DigitalFilterRealization(QMainWindow):
         input_text = self.scene.addText("x[n]")
         input_text.setPos(5, 140)
         self.add_line(10, (1+1)*delay_distance-25,0.5*delay_distance+10, (1+1)*delay_distance-25)
-        input_text.setDefaultTextColor(Qt.blue)
+        input_text.setDefaultTextColor(Qt.white)
         
         
         output_text = self.scene.addText("y[n]")
         output_text.setPos(4*delay_distance+35, 140)
-        output_text.setDefaultTextColor(Qt.blue)
+        output_text.setDefaultTextColor(Qt.white)
 
         # Connect to output
         self.add_line(3.5*delay_distance+25, (1+1)*delay_distance-25, 4*delay_distance+50, (1+1)*delay_distance-25)
@@ -199,10 +225,10 @@ class DigitalFilterRealization(QMainWindow):
         brush = QBrush(Qt.white)
         # Parameters
         box_width, box_height = 50, 30
-        delay_distance = 100
-        line_length = 50       
+        delay_distance = 150
+        line_length = 100       
         input_text = self.scene.addText("x[n]")
-        input_text.setPos(10, 160)
+        input_text.setPos(0.5*delay_distance + 30, (1+1)*delay_distance-25 +25 )
         self.add_line(0.5*delay_distance, (1+1)*delay_distance-25,delay_distance, (1+1)*delay_distance-25)
         input_text.setDefaultTextColor(Qt.white)
                      
@@ -229,7 +255,7 @@ class DigitalFilterRealization(QMainWindow):
             component_count +=2
             
         output_text = self.scene.addText("y[n]")
-        output_text.setPos((component_count-1)*delay_distance + 2*line_length, 160)
+        output_text.setPos((component_count-1)*delay_distance + 2*line_length, (1+1)*delay_distance-25 +25)
         output_text.setDefaultTextColor(Qt.white)
         # Connect to output
         self.add_line((component_count-1)*delay_distance , (1+1)*delay_distance-25, (component_count-1)*delay_distance + 2*line_length, (1+1)*delay_distance-25)
@@ -321,13 +347,13 @@ class DigitalFilterRealization(QMainWindow):
         input_text = self.scene.addText("x[n]")
         input_text.setPos(10, 160)
         self.add_line(50, (1+1)*100-25,100+25, (1+1)*100-25)
-        input_text.setDefaultTextColor(Qt.blue)
+        input_text.setDefaultTextColor(Qt.white)
         input_text.setFont(self.font)
 
         # Output
         output_text = self.scene.addText("y[n]")
         output_text.setPos(750, 160)
-        output_text.setDefaultTextColor(Qt.blue)
+        output_text.setDefaultTextColor(Qt.white)
         input_text.setFont(self.font)
 
         # Connect to output
@@ -390,12 +416,13 @@ class DigitalFilterRealization(QMainWindow):
     def add_line(self, x1, y1, x2, y2, text=None):
         """Add a connecting line"""
         line = QGraphicsLineItem(x1, y1, x2, y2)
-        line.setPen(QPen(Qt.black, 4))
+        line.setPen(QPen(Qt.white, 4))
+        
         if text is not None:
             line_text = self.scene.addText(text)
             line_text.setPos((x1 + x2)//2, (y1 + y2)//2)
             line_text.setFont(self.text_font)
-
+            line_text.setDefaultTextColor(Qt.white)
         self.scene.addItem(line)
     def add_summation_circle(self, x, y):
         """Add a summation circle"""

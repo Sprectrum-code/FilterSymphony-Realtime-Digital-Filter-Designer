@@ -32,31 +32,37 @@ class MainWindow(QMainWindow):
         
         # Initialize Program pages
         self.Pages = self.findChild(QStackedWidget, 'pages') 
-        # self.AllPassFilterPage = self.Pages.indexOf(self.findChild(QWidget , 'allpassFilters')) 
+    
+        self.drawing_page = self.findChild(QWidget, 'drawingPage')
+        self.drawing_page_index = self.Pages.indexOf(self.findChild(QWidget , 'drawingPage')) 
+
+        self.all_pass_page = self.findChild(QWidget, 'allpassFilters')
+        self.all_pass_page_index = self.Pages.indexOf(self.findChild(QWidget , 'allpassFilters')) 
+    
+        self.all_pass_page = self.findChild(QWidget, 'allpassFilters')
+        self.all_pass_page_index = self.Pages.indexOf(self.findChild(QWidget , 'allpassFilters')) 
+
+        self.home_page = self.findChild(QWidget,'homePage')
+        self.home_page_index = self.Pages.indexOf(self.findChild(QWidget , 'homePage')) 
         
         # Initialize traverse_pages_buttons
-        self.to_all_pass_filter_page_button = self.findChild(QPushButton , "signalDrawing")
-        self.to_all_pass_filter_page_button.clicked.connect(self.go_to_drawing_page)
-        
+        self.to_drawing_page_button = self.findChild(QPushButton , "signalDrawing")
+        self.to_drawing_page_button.clicked.connect(self.go_to_drawing_page)
         
         self.to_realization_page_button = self.findChild(QPushButton,"filterRealization")
         self.to_realization_page_button.clicked.connect(self.go_to_realization_page)
 
-        self.to_drawing_page_button = self.findChild(QPushButton , "filters")
-        self.to_drawing_page_button.clicked.connect(self.go_to_all_pass_filters_page)
+        self.to_allpassfilters_page_button = self.findChild(QPushButton , "filters")
+        self.to_allpassfilters_page_button.clicked.connect(self.go_to_all_pass_filters_page)
+        
         self.to_home_page_from_draw_page = self.findChild(QPushButton, "backHome2")
-        self.to_home_page_from_draw_page.clicked.connect(self.go_to_main_page_from_ap)
+        self.to_home_page_from_draw_page.clicked.connect(self.go_to_home_from_drawing)
 
-        self.to_main_page_from_ap_button = self.findChild(QPushButton , "backHome3")
-        self.to_main_page_from_ap_button.clicked.connect(self.go_to_main_page_from_ap)
+        self.to_home_page_from_ap_button = self.findChild(QPushButton , "backHome3")
+        self.to_home_page_from_ap_button.clicked.connect(self.go_to_main_page_from_ap)
         
-        self.to_signal_drawing_page_button = self.findChild(QPushButton , "signalDrawing")
-        self.to_signal_drawing_page_button.clicked.connect(self.go_to_signal_page)
-        
-        self.to_main_page_from_signal_page_button = self.findChild(QPushButton , "backHome2")
-        self.to_main_page_from_signal_page_button.clicked.connect(self.go_to_main_page_from_signal)
-        
-        
+        # self.to_home_page_from_signal_page_button = self.findChild(QPushButton , "backHome2")
+        # self.to_home_page_from_signal_page_button.clicked.connect(self.go_to_main_page_from_signal
 
         # Initializing the signal viewer
         self.pre_signal_viewer = SignalViewer()
@@ -71,19 +77,19 @@ class MainWindow(QMainWindow):
         self.cCodeGenerator = self.findChild(QPushButton, "cCodeGenerator")
         self.cCodeGenerator.clicked.connect(self.download_c_code)
         
-        # Initialize signal page viewers and frames
+        # Initialize signal page viewers and frames will not be used
         self.signal_page_pre_viewer = SignalViewer()
         self.signal_page_post_viewer = SignalViewer()
         
         self.signal_page_pre_viewer_frame = self.findChild(QFrame , "frame_4")
         self.signal_page_pre_viewer_layout = QVBoxLayout()
         self.signal_page_pre_viewer_frame.setLayout(self.signal_page_pre_viewer_layout)
-        self.signal_page_pre_viewer_layout.addWidget(self.signal_page_pre_viewer)
-        
+                
         self.signal_page_post_viewer_frame = self.findChild(QFrame , "frame_5")
         self.signal_page_post_viewer_layout = QVBoxLayout()
         self.signal_page_post_viewer_frame.setLayout(self.signal_page_post_viewer_layout)
-        self.signal_page_post_viewer_layout.addWidget(self.signal_page_post_viewer)
+        #modified by deeb to add the viewers into the drawing page
+        
         
         # Initialize all pass page viewer frames
         self.ap_filter_phase_viewer_frame = self.findChild(QFrame , "frame_11")
@@ -295,14 +301,11 @@ class MainWindow(QMainWindow):
         self.print_form_1_button = self.findChild(QPushButton , "pushButton_12")
         self.print_form_2_button = self.findChild(QPushButton , "pushButton_13")
         
-        self.direct_form_1_realization = DigitalFilterRealization(self.print_form_1_button, 
-                                                                  self.direct_form_1_frame,
+        self.direct_form_1_realization = DigitalFilterRealization(self.print_form_1_button,self.direct_form_1_frame,
                                                                   "direct1")
-        self.direct_form_2_realization = DigitalFilterRealization(self.print_form_2_button, 
-                                                                  self.direct_form_2_frame,
+        self.direct_form_2_realization = DigitalFilterRealization(self.print_form_2_button ,self.direct_form_2_frame,
                                                                   "direct2")
-        self.cascade_form_realization = DigitalFilterRealization(self.print_cascade_button, 
-                                                                  self.cascade_form_frame,
+        self.cascade_form_realization = DigitalFilterRealization(self.print_cascade_button,self.cascade_form_frame,
                                                                   "cascade")
         
  
@@ -313,30 +316,10 @@ class MainWindow(QMainWindow):
         self.draw_signal_speed_slider = self.findChild(QSlider, "horizontalSlider")
         self.draw_signal_tool = RealTimeSignal(self.draw_signal_speed_slider, self.controller)
 
-        self.mouse_tracker = MouseTrackingCanvas()
         self.mouse_tracker_frame = self.findChild(QFrame, "frame_6")
         self.mouse_tracker_frame_layout = QVBoxLayout()
         self.mouse_tracker_frame.setLayout(self.mouse_tracker_frame_layout)
         self.mouse_tracker_frame_layout.addWidget(self.draw_signal_tool.canvas)
-        
-        # viewer one
-        self.drawn_signal_viewer_frame = self.findChild(QFrame, "frame_4")
-        self.drawn_signal_viewer_frame_layout = QVBoxLayout()
-        self.drawn_signal_viewer = Viewer()
-        self.drawn_signal_viewer_frame.setLayout(self.drawn_signal_viewer_frame_layout)
-        self.drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.draw_graph)
-
-        
-        # viewer two
-        self.filtered_drawn_signal_viewer_frame = self.findChild(QFrame, "frame_5")
-        self.filtered_drawn_signal_viewer_frame_layout = QVBoxLayout()
-        self.filtered_drawn_signal_viewer = Viewer()
-        self.filtered_drawn_signal_viewer_frame.setLayout(self.filtered_drawn_signal_viewer_frame_layout)
-        self.filtered_drawn_signal_viewer_frame_layout.addWidget(self.draw_signal_tool.filter_graph)
-        
-        #Speed control
-        self.draw_signal_speed_slider = self.findChild(QFrame, "horizontalSlider")
-        
         #checkbox
         self.enable_drawing_checkbox = self.findChild(QCheckBox, "checkBox") 
         self.enable_drawing_checkbox.stateChanged.connect(self.turn_draw_mode)
@@ -557,12 +540,7 @@ class MainWindow(QMainWindow):
             self.designer_viewer.import_filter(file_path)
         else:
             QMessageBox.warning(self, "No File Selected", "Please select a valid CSV file.")
-    
-    def go_to_signal_page(self):
-        page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
-        if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)
-            
+               
     def go_to_all_pass_filters_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'allpassFilters'))
         if page_index != -1:
@@ -570,22 +548,34 @@ class MainWindow(QMainWindow):
             # self.controller.calculate_all_pass_filter_phase()     
             self.controller.ap_corrected_phase_viewer.compute_phase(self.designer_viewer.poles_list , self.designer_viewer.zeros_list)
 
-    def go_to_main_page_from_signal(self):
-        page_index = self.Pages.indexOf(self.findChild(QWidget, 'homePage'))
-        if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)
+    def go_to_home_from_drawing(self):
+        if self.home_page_index != -1:
+            self.Pages.setCurrentIndex(self.home_page_index)
+            self.pre_signal_viewer.setParent(None)
+            self.post_signal_viewer.setParent(None)
+            self.pre_signal_frame_layout.addWidget(self.pre_signal_viewer)
+            self.post_signal_frame_layout.addWidget(self.post_signal_viewer)
+        
             self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
             self.controller.toggle_play_pause_signal_viewers(self.signal_viewer_play_pause_button)
             
     def go_to_drawing_page(self):
-        page_index = self.Pages.indexOf(self.findChild(QWidget, 'drawingPage'))
-        if page_index != -1:
-            self.Pages.setCurrentIndex(page_index)      
+        if self.drawing_page_index != -1:
+            self.Pages.setCurrentIndex(self.drawing_page_index) 
+            
+            self.pre_signal_viewer.setParent(None)
+            self.post_signal_viewer.setParent(None)
+            
+            # Reuse the existing viewers from the home page
+            self.signal_page_pre_viewer_layout.addWidget(self.pre_signal_viewer)
+            self.signal_page_post_viewer_layout.addWidget(self.post_signal_viewer)
+        
     
     def go_to_realization_page(self):
         page_index = self.Pages.indexOf(self.findChild(QWidget, 'realizationPage'))
         if page_index != -1:
             self.Pages.setCurrentIndex(page_index)      
+        
         # we need to add functions that set the zeros and poles
         self.cascade_form_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
         self.direct_form_1_realization.draw_realization(self.designer_viewer.zeros_list, self.designer_viewer.poles_list)
@@ -612,17 +602,18 @@ class MainWindow(QMainWindow):
             self.controller.all_pass_zeros_poles_list[1].clear()
             self.controller.original_all_pass_zeros_poles_list[0].clear()
             self.controller.original_all_pass_zeros_poles_list[1].clear()
-    
+            
     def download_c_code(self):
         self.generator.save_to_file(self.designer_viewer.poles_list, self.designer_viewer.zeros_list, "Filter.c")
         
     def turn_draw_mode(self):
         if self.enable_drawing_checkbox.isChecked():
-            self.draw_signal_tool.canvas.toggle_timer(True)
             self.pre_signal_viewer.clear_viewer_content()
             self.post_signal_viewer.clear_viewer_content()
-            self.signal_page_pre_viewer.clear_viewer_content()
-            self.signal_page_post_viewer.clear_viewer_content()
+            self.draw_signal_tool.canvas.toggle_timer(True)
+
+            # self.signal_page_pre_viewer.clear_viewer_content()
+            # self.signal_page_post_viewer.clear_viewer_content()
             
         else:
             self.draw_signal_tool.canvas.toggle_timer(False)

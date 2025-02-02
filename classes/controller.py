@@ -28,27 +28,27 @@ class Controller():
         self.all_pass_zeros_poles_list = [[],[]]
         self.original_all_pass_zeros_poles_list = [[],[]]
         self.ap_filter_added = False
-        self.signal_page_pre_viewer = pre_signal_viewer
-        self.signal_page_post_viewer = post_signal_viewer
+        # self.signal_page_pre_viewer = pre_signal_viewer
+        # self.signal_page_post_viewer = post_signal_viewer
         
     def set_current_signal(self):
         self.pre_signal_viewer.current_signal = self.current_signal
-        self.signal_page_pre_viewer.current_signal = self.current_signal
+        # self.signal_page_pre_viewer.current_signal = self.current_signal
         self.post_signal_viewer.current_signal = self.filtered_signal
-        self.signal_page_post_viewer.current_signal = self.filtered_signal
+        # self.signal_page_post_viewer.current_signal = self.filtered_signal
         self.compute_magnitude_and_phase()
     
     def browse_signal(self , file_path):
         self.pre_signal_viewer.clear_viewer_content()
         self.post_signal_viewer.clear_viewer_content()
-        self.signal_page_pre_viewer.clear_viewer_content()
-        self.signal_page_post_viewer.clear_viewer_content()
+        # self.signal_page_pre_viewer.clear_viewer_content()
+        # self.signal_page_post_viewer.clear_viewer_content()
         read_data = pd.read_csv(file_path)
         time_list = read_data['Time'].tolist()
         signal_list = read_data['Signal'].tolist()
         self.current_signal = CustomSignal(time_list , signal_list).signal
-        self.signal_page_pre_viewer.play_timer()
-        self.signal_page_post_viewer.play_timer()
+        self.pre_signal_viewer.play_timer()
+        self.post_signal_viewer.play_timer()
         self.replay_signal_viewers()
         self.compute_new_filter(self.designer_viewer.zeros_list , self.designer_viewer.poles_list)
         
@@ -95,16 +95,16 @@ class Controller():
     def replay_signal_viewers(self):
         self.pre_signal_viewer.current_signal_plotting_index = 0
         self.post_signal_viewer.current_signal_plotting_index = 0
-        self.signal_page_pre_viewer.current_signal_plotting_index = 0
-        self.signal_page_post_viewer.current_signal_plotting_index = 0
+        # self.signal_page_pre_viewer.current_signal_plotting_index = 0
+        # self.signal_page_post_viewer.current_signal_plotting_index = 0
     
     def modify_signal_viewers_speed(self , new_speed):
         self.pre_signal_viewer.change_viewer_speed(new_speed)
         self.post_signal_viewer.change_viewer_speed(new_speed)
     
-    def modify_signal_page_viewers_speed(self , new_speed):
-        self.signal_page_pre_viewer.change_viewer_speed(new_speed)
-        self.signal_page_post_viewer.change_viewer_speed(new_speed)
+    # def modify_signal_page_viewers_speed(self , new_speed):
+    #     self.signal_page_pre_viewer.change_viewer_speed(new_speed)
+    #     self.signal_page_post_viewer.change_viewer_speed(new_speed)
     
     def compute_new_filter(self, zeros , poles):
         # print(zeros[0][0].real)
@@ -137,3 +137,5 @@ class Controller():
         self.filtered_signal = [self.current_signal[0] , filtered_signal.real]
         
         self.set_current_signal()
+        
+        

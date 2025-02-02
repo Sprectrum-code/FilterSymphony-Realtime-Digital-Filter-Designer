@@ -67,7 +67,9 @@ class SignalViewer(Viewer):
         self.play_timer()
 
     def clear_viewer_content(self):
-        self.current_signal[0] = list(self.current_signal[0])
-        self.current_signal[1] = list(self.current_signal[1])
-        self.current_signal[0].clear()
-        self.current_signal[1].clear()
+        """
+        Clears the content of the current signal and resets the plotting index.
+        """
+        self.current_signal = [[], []]  # Reset the signal to empty lists
+        self.current_signal_plotting_index = 0  # Reset the plotting index
+        self.curve.setData([], [])  # Clear the plo
