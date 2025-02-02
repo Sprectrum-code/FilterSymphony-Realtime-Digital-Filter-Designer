@@ -1,4 +1,4 @@
-# Realtime Digital Filter Designer
+# FilterSymphony: Realtime Digital Filter Designer
 
 ![Application Overview](assets/home.png "Overview of the Digital Filter Designer")
 
@@ -16,6 +16,8 @@ The **Realtime Digital Filter Designer** is an interactive desktop application t
 - **Editing Controls:**
   - Delete selected zeros or poles.
   - Clear all zeros, poles, or reset entirely.
+  - **Undo and Redo:**
+    - Step back or forward through filter design changes.
 
 ### 2. Frequency Response Visualization
 - **Magnitude and Phase Response Graphs:**
@@ -43,22 +45,33 @@ The **Realtime Digital Filter Designer** is an interactive desktop application t
 - **Enable/Disable All-Pass Elements:**
   - Toggle specific all-pass filters via a dropdown menu or checkboxes.
 
+### 6. Filter Realization and Code Generation
+- **Filter Realization:**
+  - Generate filter coefficients based on the designed zero-pole configuration.
+  - Implement different realization structures (e.g., Direct Form I, Direct Form II, Transposed, Lattice).
+- **C Code Generation:**
+  - Automatically generate C code for embedded system implementation.
+  - Export filter coefficients and structures in a hardware-compatible format.
+
 ---
 
 ## Preview:
 
 ### Interactive Z-Plane Editing
 - **Real-time Zero-Pole Placement:**
-  ![Z-Plane Editor](assets/z_plane_editor.gif "Placing zeros and poles interactively")
+  ![Z-Plane Editor](assets/interactive_placement.gif "Placing zeros and poles interactively")
 
-### Frequency Response Graphs
+### Phase Correction and Allpass filter library
 - **Magnitude & Phase Response:**
-  ![Frequency Response](assets/frequency_response.gif "Real-time frequency response visualization")
+  ![Frequency Response](assets/allpass.gif "Real-time frequency response visualization")
 
 ### Real-Time Signal Processing
 - **Live Input & Filtering:**
-  ![Real-Time Filtering](assets/realtime_filtering.gif "Processing signals in real-time")
+  ![Real-Time Filtering](assets/realtime_testing.gif "Processing signals in real-time")
 
+### FIlter Realization
+- **Filter realization using Direct form 1 , Direct form 2 and Cascade form:**
+  ![Real-Time Filtering](assets/realization.gif "Processing signals in real-time")
 ---
 
 ## Getting Started
